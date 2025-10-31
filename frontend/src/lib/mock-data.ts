@@ -11,9 +11,15 @@ export const mockCredentials = {
   number: '1234567890',
   password: '12345678',
 };
+export type DiagnosisStatus = 'healthy' | 'needs-attention' | 'critical';
+export interface Diagnosis {
+  id: string; plantName: string; disease: string; confidence: number; severity: string;
+  imageUrl: string; detectedAt: string; status: DiagnosisStatus;
+  treatment: { immediate: string[]; longTerm: string[]; prevention: string[]; };
+  description: string;
+}
 
-// Mock Plant Diagnoses
-export const mockDiagnoses = [
+export const mockDiagnoses: Diagnosis[] = [
   {
     id: '1',
     plantName: 'Tomato Plant',

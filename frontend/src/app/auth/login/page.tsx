@@ -94,8 +94,9 @@ export default function LoginPage() {
         return;
       }
 
-      // Save token
+      // Save token and auth flag
       localStorage.setItem('token', data.access_token);
+      localStorage.setItem('plantcare_authenticated', 'true');
 
       alert('Login successful!');
       router.push('/dashboard'); // redirect after login
@@ -113,6 +114,7 @@ export default function LoginPage() {
     if (activeTab === 'signin') {
       if ((phone === '+91 9999999999' || phone === mockCredentials.number) && password === mockCredentials.password) {
         localStorage.setItem('plantcare_authenticated', 'true');
+        localStorage.removeItem('token'); // Clear any existing token
         window.location.href = '/dashboard';
       } else {
         setError('Invalid credentials. Try: +91 9999999999 / demo123');
@@ -120,6 +122,7 @@ export default function LoginPage() {
     } else {
       if (name && phone && password) {
         localStorage.setItem('plantcare_authenticated', 'true');
+        localStorage.removeItem('token'); // Clear any existing token
         window.location.href = '/dashboard';
       } else {
         setError('Please fill in all fields');

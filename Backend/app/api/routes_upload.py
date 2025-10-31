@@ -1,5 +1,5 @@
 from pathlib import Path
-from fastapi import APIRouter, UploadFile, File,HTTPException
+from fastapi import APIRouter, UploadFile, File,HTTPException, Depends,status
 
 import sys
 import os
@@ -12,13 +12,16 @@ from app.models.user_model import SignupUser, LoginUser
 # from db.database import users_collection  # your Mongo connection
 from app.db.database import users_collection
 from app.utils.jwt_helper import create_access_token
-
+# from app.middleware.auth_middleware import get_current_user
 # router = APIRouter()
+from app.middleware.auth_utils import get_current_user
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
+from app.utils.config import JWT_SECRET_KEY, JWT_ALGORITHM
 
 sys.path.append(r'D:\Hacktons\HackMan\AI')
 import prediction
+import testing
 
 router = APIRouter(prefix="/transcript", tags=["Transcript"])
 
@@ -42,7 +45,7 @@ async def upload_images(files: list[UploadFile] = File(...)):
         print(f"✅ File saved at: {abs_path}")
 
         try:
-            prediction.getdataresponce(abs_path)
+            testing.getdataresponce(abs_path)
         except Exception as e:
             print(f"⚠️ Prediction failed for {file.filename}: {e}")
 
@@ -50,8 +53,24 @@ async def upload_images(files: list[UploadFile] = File(...)):
             "filename": file.filename,
             "url": f"/uploads/{file.filename}"
         })
+    outputresponce= testing.finalize_results()
+    # print(json.dumps(outputresponce, indent=2))
+    print("djjjjjjjjjjjjjjjjjjjjjjjj",outputresponce)
+    mobile="8431036155"
+    user = await users_collection.find_one({"mobile": mobile})
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
 
-    return {"uploaded": urls}
+    # Add plant data to user's 'plantResponses' array
+    await users_collection.update_one(
+        {"mobile": mobile},
+        {"$push": {"plantResponses": outputresponce}}
+    )
+
+    return {"message": "Plant response added successfully!"}
 
 @router.post("/getnurseries")
 def getnurseries():
@@ -138,3 +157,10 @@ async def login(user: LoginUser):
 @router.get("/")
 def getdata():
     return {"message": "Auth service ready 🚀"}
+
+# @router.get("/dashboard")
+# async def get_dashboard(current_user: dict = Depends(get_current_user)):
+#     return {
+#         "message": "Welcome to your dashboard!",
+#         "user": current_user
+#     }

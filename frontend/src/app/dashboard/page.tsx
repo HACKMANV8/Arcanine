@@ -1,27 +1,60 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Plus, ArrowRight, Calendar, MessageCircle, MapPin, Camera, Upload, Activity } from 'lucide-react';
+import { Plus, ArrowRight, Calendar, MessageCircle, MapPin, Camera, Upload, Activity, UserRound } from 'lucide-react';
 import Link from 'next/link';
 import { DiagnosisCard } from '@/components/shared/DiagnosisCard';
 import { mockDiagnoses, mockUser, mockUserPlants } from '@/lib/mock-data';
 // import { useState } from "react";
 import axios from "axios";
-// 
+import { link } from 'fs';
+import { useRouter } from 'next/navigation';
+// import axios from "axios";
+
 export default function DashboardPage() {
+  const router=useRouter();
   const [files, setFiles] = useState<File[]>([]);
   const [dragActive, setDragActive] = useState(false);
   const [uploaded, setUploaded] = useState([]);
   const [uploading, setUploading] = useState(false);
   const recentDiagnoses = mockDiagnoses.slice(0, 4);
   const [selectedFiles, setSelectedFiles] = useState([]);
-  // const [uploading, setUploading] = useState(false);
+  const [userData, setUserData] = useState(null);
   const [results, setResults] = useState([]);
+  const [token, setToken] = useState<string | null>(null);
+
+  // const token = localStorage.getItem("token");
 
   const handleInput = (e:React.ChangeEvent<HTMLInputElement>) => {
     setSelectedFiles(Array.from(e.target.files)) ,onFilesSelected(e.target.files);
   };
+  
+  // useEffect(() => {
+  //   // ✅ Runs only on client
+  //   const storedToken = localStorage.getItem("token");
+  //   console.log(storedToken)
+  //   setToken(storedToken);
+
+  //   if (storedToken) {
+  //     fetchUserData(storedToken);
+  //   }
+  // }, []);
+
+  // const fetchUserData = async (token: string) => {
+  //   try {
+  //     const res = await axios.get("http://127.0.0.1:8000/transcript/dashboard", {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+  //     console.log("data"+res.data)
+  //     setUserData(res.data);
+  //     console.log("User Data:", res.data);
+  //   } catch (error) {
+  //     console.error("Error fetching dashboard:", error);
+  //   }
+  // };
   const handleUpload = async () => {
     if (selectedFiles.length === 0) {
       alert("Please select at least one image!");
@@ -39,7 +72,8 @@ export default function DashboardPage() {
 
       console.log("Upload response:", res.data);
       setResults(res.data.results);
-      alert("✅ Uploaded successfully!");
+      router.push('/dashboard/results/1');
+      // alert("✅ Uploaded successfully!");
     } catch (error) {
       console.error("❌ Upload failed:", error);
       alert("Error uploading files.");
