@@ -83,9 +83,9 @@ export const mock7DayPlan = {
       date: '2025-01-15',
       status: 'completed',
       tasks: [
-        { id: '1-1', title: 'Remove all infected leaves', completed: true, type: 'action' },
-        { id: '1-2', title: 'Apply copper fungicide spray', completed: true, type: 'treatment' },
-        { id: '1-3', title: 'Document current condition', completed: true, type: 'monitoring' },
+        { id: '1-1', title: 'Remove all infected leaves', completed: true, description: 'Carefully remove and destroy all leaves showing signs of infection to prevent further spread.' },
+        { id: '1-2', title: 'Apply copper fungicide spray', completed: true, description: 'Apply a copper-based fungicide to all parts of the plant, following the product instructions.' },
+        { id: '1-3', title: 'Document current condition', completed: true, description: 'Take photos of the plant to track the progress of the treatment.' },
       ],
       notes: 'Removed 5 heavily infected leaves. Applied fungicide in the evening.',
     },
@@ -94,9 +94,9 @@ export const mock7DayPlan = {
       date: '2025-01-16',
       status: 'completed',
       tasks: [
-        { id: '2-1', title: 'Check for new spots', completed: true, type: 'monitoring' },
-        { id: '2-2', title: 'Water at base only', completed: true, type: 'care' },
-        { id: '2-3', title: 'Remove any fallen leaves from soil', completed: true, type: 'action' },
+        { id: '2-1', title: 'Check for new spots', completed: true, description: 'Inspect the plant for any new spots or signs of the disease spreading.' },
+        { id: '2-2', title: 'Water at base only', completed: true, description: 'Water the plant at the base to avoid getting the leaves wet, which can encourage fungal growth.' },
+        { id: '2-3', title: 'Remove any fallen leaves from soil', completed: true, description: 'Remove and destroy any fallen leaves from around the base of the plant.' },
       ],
       notes: 'No new spots observed. Plant looks stable.',
     },
@@ -105,8 +105,8 @@ export const mock7DayPlan = {
       date: '2025-01-17',
       status: 'completed',
       tasks: [
-        { id: '3-1', title: 'Second fungicide application', completed: true, type: 'treatment' },
-        { id: '3-2', title: 'Inspect neighboring plants', completed: true, type: 'monitoring' },
+        { id: '3-1', title: 'Second fungicide application', completed: true, description: 'Apply a second round of copper-based fungicide to the plant.' },
+        { id: '3-2', title: 'Inspect neighboring plants', completed: true, description: 'Check nearby plants for any signs of the disease.' },
       ],
       notes: 'Applied second round of treatment. Other plants appear healthy.',
     },
@@ -115,9 +115,9 @@ export const mock7DayPlan = {
       date: '2025-01-18',
       status: 'today',
       tasks: [
-        { id: '4-1', title: 'Monitor for improvement', completed: false, type: 'monitoring' },
-        { id: '4-2', title: 'Adjust watering schedule', completed: false, type: 'care' },
-        { id: '4-3', title: 'Take progress photos', completed: false, type: 'documentation' },
+        { id: '4-1', title: 'Monitor for improvement', completed: false, description: 'Check the plant for signs of improvement, such as no new spots and the existing spots not getting larger.' },
+        { id: '4-2', title: 'Adjust watering schedule', completed: false, description: 'Ensure the plant is not being over or under-watered.' },
+        { id: '4-3', title: 'Take progress photos', completed: false, description: 'Take photos to compare with the initial photos and track progress.' },
       ],
       notes: '',
     },
@@ -126,8 +126,8 @@ export const mock7DayPlan = {
       date: '2025-01-19',
       status: 'upcoming',
       tasks: [
-        { id: '5-1', title: 'Apply organic mulch around base', completed: false, type: 'action' },
-        { id: '5-2', title: 'Check soil moisture', completed: false, type: 'monitoring' },
+        { id: '5-1', title: 'Apply organic mulch around base', completed: false, description: 'Apply a layer of organic mulch around the base of the plant to help retain moisture and prevent soil-borne diseases.' },
+        { id: '5-2', title: 'Check soil moisture', completed: false, description: 'Check the soil moisture to ensure the plant is getting the right amount of water.' },
       ],
       notes: '',
     },
@@ -136,8 +136,8 @@ export const mock7DayPlan = {
       date: '2025-01-20',
       status: 'upcoming',
       tasks: [
-        { id: '6-1', title: 'Third fungicide application', completed: false, type: 'treatment' },
-        { id: '6-2', title: 'Prune for better air flow', completed: false, type: 'action' },
+        { id: '6-1', title: 'Third fungicide application', completed: false, description: 'Apply a third round of copper-based fungicide to the plant.' },
+        { id: '6-2', title: 'Prune for better air flow', completed: false, description: 'Prune the plant to improve air circulation, which can help prevent fungal diseases.' },
       ],
       notes: '',
     },
@@ -146,8 +146,8 @@ export const mock7DayPlan = {
       date: '2025-01-21',
       status: 'upcoming',
       tasks: [
-        { id: '7-1', title: 'Final assessment', completed: false, type: 'monitoring' },
-        { id: '7-2', title: 'Update care plan if needed', completed: false, type: 'planning' },
+        { id: '7-1', title: 'Final assessment', completed: false, description: 'Assess the plant for any remaining signs of the disease.' },
+        { id: '7-2', title: 'Update care plan if needed', completed: false, description: 'Update the care plan based on the final assessment.' },
       ],
       notes: '',
     },
@@ -295,4 +295,152 @@ export const mockUserPlants = [
     location: 'Office',
     notes: 'New leaves developing nicely',
   },
+];
+
+// Mock Marketplace Products
+export const mockMarketplaceProducts = [
+  {
+    id: '1',
+    name: 'Organic Tomatoes',
+    price: '2.50',
+    unit: 'per lb',
+    quantity: '50 lbs available',
+    seller: 'Green Thumb Garden',
+    location: 'Springfield',
+    imageUrl: 'https://images.unsplash.com/photo-1582284540020-8acbe03f4924?w=400&h=300&fit=crop',
+    rating: 4.5,
+    reviews: 120,
+    severity: 'Medium',
+    farmer: {
+      name: 'John Doe',
+      phone: '555-123-4567',
+      email: 'john.doe@example.com'
+    }
+  },
+  {
+    id: '2',
+    name: 'Fresh Basil',
+    price: '1.00',
+    unit: 'per bunch',
+    quantity: '100 bunches available',
+    seller: 'Urban Plant Nursery',
+    location: 'Springfield',
+    imageUrl: 'https://images.unsplash.com/photo-1579112944287-58a934e3ae71?w=400&h=300&fit=crop',
+    rating: 4.8,
+    reviews: 89,
+    severity: 'None',
+    farmer: {
+      name: 'Jane Smith',
+      phone: '555-234-5678',
+      email: 'jane.smith@example.com'
+    }
+  },
+  {
+    id: '3',
+    name: 'Red Roses',
+    price: '15.00',
+    unit: 'per dozen',
+    quantity: '20 dozens available',
+    seller: 'Sunset Garden Shop',
+    location: 'Springfield',
+    imageUrl: 'https://images.unsplash.com/photo-1532708059644-55900612de8b?w=400&h=300&fit=crop',
+    rating: 4.2,
+    reviews: 45,
+    severity: 'Low',
+    farmer: {
+      name: 'Peter Jones',
+      phone: '555-345-6789',
+      email: 'peter.jones@example.com'
+    }
+  },
+  {
+    id: '4',
+    name: 'Cucumbers',
+    price: '1.50',
+    unit: 'per lb',
+    quantity: '80 lbs available',
+    seller: 'Organic Gardens Supply',
+    location: 'Springfield',
+    imageUrl: 'https://images.unsplash.com/photo-1583096114034-a694c5a48436?w=400&h=300&fit=crop',
+    rating: 4.9,
+    reviews: 210,
+    severity: 'None',
+    farmer: {
+      name: 'Mary Williams',
+      phone: '555-456-7890',
+      email: 'mary.williams@example.com'
+    }
+  },
+  {
+    id: '5',
+    name: 'Bell Peppers',
+    price: '1.75',
+    unit: 'per lb',
+    quantity: '60 lbs available',
+    seller: 'Green Thumb Garden',
+    location: 'Springfield',
+    imageUrl: 'https://images.unsplash.com/photo-1599421493390-01628544a3c4?w=400&h=300&fit=crop',
+    rating: 4.6,
+    reviews: 95,
+    severity: 'Low',
+    farmer: {
+      name: 'John Doe',
+      phone: '555-123-4567',
+      email: 'john.doe@example.com'
+    }
+  },
+  {
+    id: '6',
+    name: 'Carrots',
+    price: '1.25',
+    unit: 'per bunch',
+    quantity: '120 bunches available',
+    seller: 'Urban Plant Nursery',
+    location: 'Springfield',
+    imageUrl: 'https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=400&h=300&fit=crop',
+    rating: 4.7,
+    reviews: 150,
+    severity: 'None',
+    farmer: {
+      name: 'Jane Smith',
+      phone: '555-234-5678',
+      email: 'jane.smith@example.com'
+    }
+  },
+  {
+    id: '7',
+    name: 'Sunflowers',
+    price: '10.00',
+    unit: 'per dozen',
+    quantity: '30 dozens available',
+    seller: 'Sunset Garden Shop',
+    location: 'Springfield',
+    imageUrl: 'https://images.unsplash.com/photo-1563241527-540e8783547c?w=400&h=300&fit=crop',
+    rating: 4.4,
+    reviews: 60,
+    severity: 'Low',
+    farmer: {
+      name: 'Peter Jones',
+      phone: '555-345-6789',
+      email: 'peter.jones@example.com'
+    }
+  },
+  {
+    id: '8',
+    name: 'Zucchinis',
+    price: '1.00',
+    unit: 'per lb',
+    quantity: '90 lbs available',
+    seller: 'Organic Gardens Supply',
+    location: 'Springfield',
+    imageUrl: 'https://images.unsplash.com/photo-1580296690886-3c3335473240?w=400&h=300&fit=crop',
+    rating: 4.8,
+    reviews: 180,
+    severity: 'None',
+    farmer: {
+      name: 'Mary Williams',
+      phone: '555-456-7890',
+      email: 'mary.williams@example.com'
+    }
+  }
 ];
