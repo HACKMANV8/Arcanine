@@ -1,0 +1,184 @@
+[
+  {
+    "name": "Shivam nursery",
+    "rating": 5,
+    "opening_status": "Closed ⋅ Opens 8 AM",
+    "place_link": "https://www.google.com/maps/place/data=!3m1!4b1!4m2!3m1!1s0x3bc0ed7477471afd:0x836e2072019fbf55",
+    "owner_name": "Shivam nursery",
+    "type": "Plant nursery",
+    "address": "Shivam Nursery, road, Gavani, Karnataka 591237, India"
+  },
+  {
+    "name": "Sarasvi Ropvatika",
+    "rating": 5,
+    "opening_status": "Open 24 hours",
+    "place_link": "https://www.google.com/maps/place/data=!3m1!4b1!4m2!3m1!1s0x3bc0efcc1ee27fb5:0x2e4ed34fe578f5ef",
+    "owner_name": "Sarasvi Ropvatika",
+    "type": "Wholesale plant nursery",
+    "address": "FCQ7+GG5, Sidnal, Karnataka 591211, India"
+  },
+  {
+    "name": "Kisan Sheti Seva Kendra Soundalga",
+    "rating": null,
+    "opening_status": null,
+    "place_link": "https://www.google.com/maps/place/data=!3m1!4b1!4m2!3m1!1s0x3bc0f1e0e267902f:0xbe2dfadc748820bd",
+    "owner_name": "Kisan Sheti Seva Kendra Soundalga",
+    "type": "Plant nursery",
+    "address": "SH 98, Saundalga, Karnataka 591241, India"
+  },
+  {
+    "name": "Swarup Agro Akol स्वरुप रोपवाटिका अकोळ",
+    "rating": 5,
+    "opening_status": "Closed ⋅ Opens 8:15 AM",
+    "place_link": "https://www.google.com/maps/place/data=!3m1!4b1!4m2!3m1!1s0x3bc0ef37c7b9a3c3:0x3dca187fb5f9aad5",
+    "owner_name": "Swarup Agro Akol स्वरुप रोपवाटिका अकोळ",
+    "type": "Plant nursery",
+    "address": "FC9F+96M, Akkol, Karnataka 591211, India"
+  },
+  {
+    "name": "Koganole farm",
+    "rating": null,
+    "opening_status": null,
+    "place_link": "https://www.google.com/maps/place/data=!3m1!4b1!4m2!3m1!1s0x3bc0f1000ad14b53:0xa6e8f9e3f7350ec1",
+    "owner_name": "Koganole farm",
+    "type": "Plant nursery",
+    "address": "F9P3+Q3, Saundalga, Karnataka 591215, India"
+  },
+  {
+    "name": "Shri Prasad Nursery",
+    "rating": 4.3,
+    "opening_status": "Closed ⋅ Opens 9 AM",
+    "place_link": "https://www.google.com/maps/place/data=!3m1!4b1!4m2!3m1!1s0x3bc0fa2da1671f0f:0x6e039d72f052c6c",
+    "owner_name": "Shri Prasad Nursery",
+    "type": "Plant nursery",
+    "address": "Tal Chikkodi, NH Service Rd, Koganoli, Karnataka 591229, India"
+  },
+  {
+    "name": "नेजे ऊस रोपवाटिका, सिदनाळ",
+    "rating": null,
+    "opening_status": null,
+    "place_link": "https://www.google.com/maps/place/data=!3m1!4b1!4m2!3m1!1s0x3bc0ef00440a10b1:0xf40e7463cdc030d7",
+    "owner_name": "नेजे ऊस रोपवाटिका, सिदनाळ",
+    "type": "Plant nursery",
+    "address": "FCRC+FFW, Hunnaragi, Sidnal, Karnataka 591211, India"
+  },
+  {
+    "name": "Padmavati Agro Service",
+    "rating": 4.4,
+    "opening_status": "Closed ⋅ Opens 9:30 AM",
+    "place_link": "https://www.google.com/maps/place/data=!3m1!4b1!4m2!3m1!1s0x3bc0f220caf2ebf7:0x1737bfd76f4fc2f5",
+    "owner_name": "Padmavati Agro Service",
+    "type": "Tractor dealer",
+    "address": "Old PB Rd, opposite to Camel House, Nipani, Karnataka 591237, India"
+  },
+  {
+    "name": "Kognoli nursery",
+    "rating": 4.2,
+    "opening_status": "Closed ⋅ Opens 9 AM",
+    "place_link": "https://www.google.com/maps/place/data=!3m1!4b1!4m2!3m1!1s0x3bc0fa2f7b057c3b:0xedee90961f53be68",
+    "owner_name": "Kognoli nursery",
+    "type": "Plant nursery",
+    "address": "G8MC+W2M, NH Service Rd, Karnataka 591229, India"
+  },
+  {
+    "name": "Sushant Hi - Tech Nursery",
+    "rating": 4.8,
+    "opening_status": "Open 24 hours",
+    "place_link": "https://www.google.com/maps/place/data=!3m1!4b1!4m2!3m1!1s0x3bc0fb70e927779f:0xbf1ab1c25d1ded64",
+    "owner_name": "Sushant Hi - Tech Nursery",
+    "type": "Plant nursery",
+    "address": "Sulkud road kasba sangaoan, Kagal, Maharashtra 416216, India"
+  },
+  {
+    "name": "Prasaad Green Decor",
+    "rating": 3.9,
+    "opening_status": "Closed ⋅ Opens 9 AM",
+    "place_link": "https://www.google.com/maps/place/data=!3m1!4b1!4m2!3m1!1s0x3bc0fbe1bfb9c337:0x27db41e4fdb2053f",
+    "owner_name": "Prasaad Green Decor",
+    "type": "Plant nursery",
+    "address": "Kognoli Toll Plaza, 591229, India"
+  },
+  {
+    "name": "Karnataka Forest Department (Nursery)",
+    "rating": 4.8,
+    "opening_status": null,
+    "place_link": "https://www.google.com/maps/place/data=!3m1!4b1!4m2!3m1!1s0x3bc0eba8a65a3363:0xa68449a947d104dd",
+    "owner_name": "Karnataka Forest Department",
+    "type": "Plant nursery",
+    "address": "9GCX+RC, Jainapur, Karnataka 591226, India"
+  },
+  {
+    "name": "Dhanalaxmi nursery",
+    "rating": 5,
+    "opening_status": "Closed ⋅ Opens 7 AM",
+    "place_link": "https://www.google.com/maps/place/data=!3m1!4b1!4m2!3m1!1s0x3bc08d40d6da8efb:0xda082934897e0f1",
+    "owner_name": "Dhanalaxmi nursery",
+    "type": "Agricultural service",
+    "address": "main road, near Aurnal naka, Sankeshwar, Gadhinglaj, Maharashtra 416502, India"
+  },
+  {
+    "name": "DWARAKA NURSERY",
+    "rating": 5,
+    "opening_status": null,
+    "place_link": "https://www.google.com/maps/place/data=!3m1!4b1!4m2!3m1!1s0x3bc0f1461f948b6f:0x859429203686301a",
+    "owner_name": "DWARAKA NURSERY",
+    "type": "Wholesale plant nursery",
+    "address": "Bhivashi - Jatrat Rd, SOUNDALGA, Bhivashi, Karnataka 591241, India"
+  },
+  {
+    "name": "Dudhaganga Ropvatika",
+    "rating": 4.3,
+    "opening_status": "Open 24 hours",
+    "place_link": "https://www.google.com/maps/place/data=!3m1!4b1!4m2!3m1!1s0x3bc0fb844fa057ad:0x4a55d1d06fe1ebae",
+    "owner_name": "Dudhaganga Ropvatika",
+    "type": "Plant nursery",
+    "address": "Nipani, Karnataka 591229, India"
+  },
+  {
+    "name": "Sai Nursery(Gadmcl-Nursery)",
+    "rating": 4.8,
+    "opening_status": null,
+    "place_link": "https://www.google.com/maps/place/data=!3m1!4b1!4m2!3m1!1s0x3bc08d5eb03b7d07:0xda19ad8c81f7ac04",
+    "owner_name": "Sai Nursery",
+    "type": "Plant nursery",
+    "address": "69J6+FWW, Sankeshwar Gadhinglaj Rd, Gadhinglaj, Maharashtra 416502, India"
+  },
+  {
+    "name": "SHRI KHAPARE ROPWATIKA",
+    "rating": 4.4,
+    "opening_status": null,
+    "place_link": "https://www.google.com/maps/place/data=!3m1!4b1!4m2!3m1!1s0x3bc08d510196cf4b:0xbcf9b20186461fee",
+    "owner_name": "SHRI KHAPARE ROPWATIKA",
+    "type": "Plant nursery",
+    "address": "Shop No.1, Road, nearby Gadhinglaj, Dundage, Maharashtra 416501, India"
+  },
+  {
+    "name": "Kisan Krushi Seva Kendra",
+    "rating": null,
+    "opening_status": null,
+    "place_link": "https://www.google.com/maps/place/data=!3m1!4b1!4m2!3m1!1s0x3bc0f750ff00917b:0xcb126abd0cee2d0b",
+    "owner_name": "Kisan Krushi Seva Kendra",
+    "type": "Plant nursery",
+    "address": "Shop No 1, near by Main Road, Anur, Banage, Maharashtra 416235, India"
+  },
+  {
+    "name": "Vanashree Hightech Nursery",
+    "rating": 5,
+    "opening_status": "Open 24 hours",
+    "place_link": "https://www.google.com/maps/place/data=!3m1!4b1!4m2!3m1!1s0x3bc093a37b2b1abf:0x871bb2ea668b35dc",
+    "owner_name": "Vanashree Hightech Nursery",
+    "type": "Plant nursery",
+    "address": "Hebbal, Hebbal Kasaba Nool, Maharashtra 416501, India"
+  },
+  {
+    "name": "Shri Ram Ropvatika Nursery",
+    "rating": 5,
+    "opening_status": "Open 24 hours",
+    "place_link": "https://www.google.com/maps/place/data=!3m1!4b1!4m2!3m1!1s0x3bc0e5d49a01fbe3:0xa97ae409a05c4a56",
+    "owner_name": "Shri Ram Ropvatika Nursery",
+    "type": "Plant nursery",
+    "address": "Sankapal Mala, Dhonewadi Kasanal, Road, Dhonewadi, Karnataka 591263, India"
+  }
+]
+
+

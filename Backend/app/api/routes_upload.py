@@ -1,10 +1,22 @@
 from pathlib import Path
-from fastapi import APIRouter, UploadFile, File
+from fastapi import APIRouter, UploadFile, File,HTTPException
+
 import sys
 import os
 import http.client
 import urllib.parse
 import json
+# from fastapi import APIRouter, HTTPException
+from passlib.context import CryptContext
+from app.models.user_model import SignupUser, LoginUser
+# from db.database import users_collection  # your Mongo connection
+from app.db.database import users_collection
+from app.utils.jwt_helper import create_access_token
+
+# router = APIRouter()
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+
 sys.path.append(r'D:\Hacktons\HackMan\AI')
 import prediction
 
@@ -87,3 +99,42 @@ def getnurseries():
     #     json.dump(filtered_results, f, indent=2, ensure_ascii=False)
 
 
+@router.post("/signup")
+async def signup(user: SignupUser):
+    # Check if user already exists
+    existing_user = await users_collection.find_one({"mobile": user.mobile})
+    if existing_user:
+        raise HTTPException(status_code=400, detail="User already exists")
+
+    # Hash password
+    hashed_password = pwd_context.hash(user.password)
+
+    # Save to DB
+    await users_collection.insert_one({
+        "name": user.name,
+        "mobile": user.mobile,
+        "location": user.location,
+        "password": hashed_password
+    })
+
+    # Generate token
+    token = create_access_token({"sub": user.mobile})
+    return {
+        "message": "User created successfully",
+        "access_token": token,
+        "token_type": "bearer"
+    }
+
+
+@router.post("/login")
+async def login(user: LoginUser):
+    db_user = await users_collection.find_one({"mobile": user.mobile})
+    if not db_user or not pwd_context.verify(user.password, db_user["password"]):
+        raise HTTPException(status_code=401, detail="Invalid mobile number or password")
+
+    token = create_access_token({"sub": db_user["mobile"]})
+    return {"access_token": token, "token_type": "bearer"}
+
+@router.get("/")
+def getdata():
+    return {"message": "Auth service ready 🚀"}

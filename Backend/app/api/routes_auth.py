@@ -4,9 +4,10 @@ from models import SignupUser, LoginUser
 from db import users_collection  # your Mongo connection
 from utils import create_access_token  # your JWT helper
 
-router = APIRouter()
+# router = APIRouter()
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
+router = APIRouter(prefix="/auth", tags=["auth"])
 @router.post("/signup")
 def signup(user: SignupUser):
     # Check if user already exists

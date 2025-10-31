@@ -34,7 +34,7 @@ export const mockDiagnoses = [
     id: '2',
     plantName: 'Rose Bush',
     disease: 'Powdery Mildew',
-    confidence: 88,
+    confidence: 68,
     severity: 'Low',
     imageUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400&h=300&fit=crop',
     detectedAt: '2025-01-14T14:20:00Z',
