@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Calendar, Share2, Download, CheckCircle, AlertCircle, AudioLines, Loader2, AlertTriangle } from 'lucide-react';
+import { ArrowLeft, Calendar, Share2, Download, CheckCircle, AlertCircle, AudioLines, Loader2, AlertTriangle, MessageCircle, Upload} from 'lucide-react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
+import { mock7DayPlan, mockCompleted7DayPlan } from '@/lib/mock-data';
 
 interface Diagnosis {
   id: string;
@@ -27,6 +28,7 @@ export default function ResultsPage() {
   const params = useParams();
   const [activeTab, setActiveTab] = useState<'diagnosis' | 'treatment' | 'prevention' | 'contact'>('diagnosis');
   const [diagnosis, setDiagnosis] = useState<Diagnosis | null>(null);
+  const [sevenDayPlan, setSevenDayPlan] = useState<typeof mock7DayPlan | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
@@ -75,6 +77,15 @@ export default function ResultsPage() {
         };
         
         setDiagnosis(transformedData);
+
+        // Simulate fetching 7-day plan
+        if (transformedData.id === mock7DayPlan.plantId) {
+          setSevenDayPlan(mock7DayPlan);
+        } else if (transformedData.id === mockCompleted7DayPlan.plantId) {
+          setSevenDayPlan(mockCompleted7DayPlan);
+        } else {
+          setSevenDayPlan(null);
+        }
       } catch (err) {
         console.error('Error fetching plant details:', err);
         setError('Failed to load plant details');
@@ -124,6 +135,16 @@ export default function ResultsPage() {
 
   const config = statusConfig[diagnosis.status] || statusConfig['needs-attention'];
   const Icon = config.icon;
+
+  const is7DayPlanCompleted = useMemo(() => {
+    if (!sevenDayPlan || sevenDayPlan.days.length < 7) return false;
+
+    const seventhDay = sevenDayPlan.days[6]; // 7th day is index 6
+    if (!seventhDay || seventhDay.tasks.length === 0) return false;
+
+    const lastTaskOfSeventhDay = seventhDay.tasks[seventhDay.tasks.length - 1];
+    return lastTaskOfSeventhDay.completed;
+  }, [sevenDayPlan]);
 
   return (
     <div className="min-h-screen bg-neutral-light">
@@ -362,7 +383,7 @@ export default function ResultsPage() {
 
               <div className="space-y-3">
                 <Link
-                  href="/dashboard/plans"
+                  href={`/dashboard/plans/${params.id}`}
                   className="w-full bg-primary hover:bg-primary-dark text-white font-medium py-3 rounded-xl text-center transition-all duration-200 flex items-center justify-center gap-2"
                 >
                   <Calendar className="w-5 h-5" />
@@ -374,6 +395,25 @@ export default function ResultsPage() {
                 >
                   Ask AI Assistant
                 </Link>
+                {/* Conditional buttons for completed 7-day plan */}
+                {is7DayPlanCompleted && (
+                  <>
+                    <Link
+                      href="/dashboard/upload"
+                      className="w-full bg-primary hover:bg-primary-dark text-white font-medium py-3 rounded-xl text-center transition-all duration-200 flex items-center justify-center gap-2"
+                    >
+                      <Upload className="w-5 h-5" />
+                      Upload New Image
+                    </Link>
+                    <Link
+                      href="/dashboard/chat"
+                      className="w-full bg-neutral-light hover:bg-neutral text-neutral-darker font-medium py-3 rounded-xl text-center transition-all duration-200 flex items-center justify-center gap-2"
+                    >
+                      <MessageCircle className="w-5 h-5" />
+                      Chat with AI
+                    </Link>
+                  </>
+                )}
               </div>
             </motion.div>
           </div>

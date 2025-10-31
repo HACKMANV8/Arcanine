@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { AlertCircle, CheckCircle, Clock, Loader2, Leaf } from 'lucide-react';
-
+import { AlertCircle, CheckCircle, Clock, Leaf } from 'lucide-react';
+import Loader from '@/components/shared/Loader';
 interface Plant {
   id: string;
   name: string;
@@ -96,7 +96,7 @@ export default function PlantsPage() {
   if (loading) {
     return (
       <div className="p-4 md:p-8 max-w-7xl mx-auto flex justify-center items-center h-96">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        <Loader />
         <span className="ml-2 text-lg">Loading your plants...</span>
       </div>
     );

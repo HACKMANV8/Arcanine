@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import { mockUserPlants, mockDiagnoses } from '@/lib/mock-data';
 import { motion } from 'framer-motion';
-import { ArrowLeft, DollarSign, Hash, List } from 'lucide-react';
+import { ArrowLeft, DollarSign, Hash, FileText, Image } from 'lucide-react';
 import Link from 'next/link';
 
 export default function ListProducePage() {
@@ -12,10 +12,11 @@ export default function ListProducePage() {
   const [quantity, setQuantity] = useState('');
   const [unit, setUnit] = useState('');
   const [description, setDescription] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
 
   const listablePlants = useMemo(() => {
     const mediumSeverityDiagnoses = mockDiagnoses.filter(
-      (d) => d.severity === 'Medium'
+      (d) => d.severity === 'Medium' || d.severity === 'High'
     );
     const listablePlantNames = mediumSeverityDiagnoses.map((d) => d.plantName);
     return mockUserPlants.filter((p) => listablePlantNames.includes(p.name));
@@ -44,6 +45,7 @@ export default function ListProducePage() {
       quantity,
       unit,
       description,
+      imageUrl,
     });
     alert('Produce listed successfully!');
   };
@@ -66,7 +68,7 @@ export default function ListProducePage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <h1 className="text-2xl md:text-3xl font-bold text-neutral-darker mb-6">List Your Produce</h1>
+          <h1 className="text-2xl md:text-3xl font-bold text-neutral-darker mb-6">List Your Produce in the Marketplace</h1>
 
           {listablePlants.length === 0 ? (
             <div className="text-center bg-white p-8 rounded-xl shadow-soft">
@@ -153,7 +155,7 @@ export default function ListProducePage() {
               <div>
                 <label htmlFor="description" className="block text-sm font-medium text-neutral-dark mb-2">Description</label>
                 <div className="relative">
-                  <List className="w-5 h-5 text-neutral-muted absolute left-3 top-4" />
+                  <FileText className="w-5 h-5 text-neutral-muted absolute left-3 top-4" />
                   <textarea
                     id="description"
                     value={description}
@@ -165,12 +167,28 @@ export default function ListProducePage() {
                 </div>
               </div>
 
+              <div>
+                <label htmlFor="imageUrl" className="block text-sm font-medium text-neutral-dark mb-2">Produce Image</label>
+                <div className="relative">
+                  <Image className="w-5 h-5 text-neutral-muted absolute left-3 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="text"
+                    id="imageUrl"
+                    value={imageUrl}
+                    onChange={(e) => setImageUrl(e.target.value)}
+                    placeholder="https://example.com/image.jpg"
+                    className="w-full p-3 pl-10 bg-neutral-light border border-neutral-light rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors duration-200"
+                    required
+                  />
+                </div>
+              </div>
+
               <motion.button
                 type="submit"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className="w-full bg-primary text-white font-bold py-3 px-4 rounded-lg hover:bg-primary-dark transition-all duration-200 shadow-md disabled:bg-neutral-muted disabled:cursor-not-allowed"
-                disabled={!selectedPlantId}
+                disabled={!selectedPlantId || !imageUrl || listablePlants.length === 0}
               >
                 List Produce
               </motion.button>
