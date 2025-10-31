@@ -1,17 +1,120 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Calendar, Share2, Download, CheckCircle, AlertCircle, AudioLines } from 'lucide-react';
+import { ArrowLeft, Calendar, Share2, Download, CheckCircle, AlertCircle, AudioLines, Loader2, AlertTriangle } from 'lucide-react';
 import Link from 'next/link';
-import { mockDiagnoses, mockNurseries } from '@/lib/mock-data';
 import { useParams } from 'next/navigation';
+
+interface Diagnosis {
+  id: string;
+  plantName: string;
+  disease: string;
+  confidence: number;
+  severity: string;
+  imageUrl: string;
+  detectedAt: string;
+  status: 'healthy' | 'needs-attention';
+  treatment: {
+    immediate: string[];
+    longTerm: string[];
+    prevention: string[];
+  };
+  description: string;
+}
 
 export default function ResultsPage() {
   const params = useParams();
   const [activeTab, setActiveTab] = useState<'diagnosis' | 'treatment' | 'prevention' | 'contact'>('diagnosis');
+  const [diagnosis, setDiagnosis] = useState<Diagnosis | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   
-  const diagnosis = mockDiagnoses.find(d => d.id === params.id) || mockDiagnoses[0];
+  // Fetch plant details from backend
+  useEffect(() => {
+    const fetchPlantDetails = async () => {
+      try {
+        setLoading(true);
+        // Get token from localStorage
+        const token = localStorage.getItem('token');
+        const mobile = '8431036155'; // This should come from the authenticated user
+        const plantId = params.id;
+        
+        // Fetch specific plant details
+        const response = await fetch(`http://localhost:8000/transcript/plant/${mobile}/${plantId}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch plant details');
+        }
+        
+        const data = await response.json();
+        console.log('Plant details:', data);
+        
+        // Transform the data to match our Diagnosis interface
+        const transformedData: Diagnosis = {
+          id: data.id || '',
+          plantName: data.plantName || 'Unknown Plant',
+          disease: data.disease || 'Unknown Disease',
+          confidence: data.confidence || 0,
+          severity: data.severity || 'Unknown',
+          // Fix image URL to be web-accessible
+          imageUrl: data.imageUrl ? `http://localhost:8000/uploads/${data.imageUrl.split('/').pop()}` : 'https://images.unsplash.com/photo-1592841200221-a6898f307baa?w=400&h=300&fit=crop',
+          detectedAt: data.detectedAt || new Date().toISOString(),
+          status: data.confidence >= 80 ? 'healthy' : 'needs-attention',
+          treatment: {
+            immediate: data.treatment?.immediate || [],
+            longTerm: data.treatment?.longTerm || [],
+            prevention: data.treatment?.prevention || [],
+          },
+          description: data.description || 'No description available',
+        };
+        
+        setDiagnosis(transformedData);
+      } catch (err) {
+        console.error('Error fetching plant details:', err);
+        setError('Failed to load plant details');
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    if (params.id) {
+      fetchPlantDetails();
+    }
+  }, [params.id]);
+  
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-neutral-light flex justify-center items-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        <span className="ml-2 text-lg">Loading plant details...</span>
+      </div>
+    );
+  }
+  
+  if (error || !diagnosis) {
+    return (
+      <div className="min-h-screen bg-neutral-light flex justify-center items-center p-4">
+        <div className="bg-white rounded-xl p-8 max-w-md w-full text-center shadow-soft">
+          <AlertTriangle className="w-12 h-12 text-red-500 mx-auto mb-4" />
+          <h3 className="text-xl font-semibold text-red-800 mb-2">Error Loading Data</h3>
+          <p className="text-red-700 mb-4">{error || 'Plant details not found'}</p>
+          <Link 
+            href="/dashboard/plants"
+            className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors inline-block"
+          >
+            Back to Plants
+          </Link>
+        </div>
+      </div>
+    );
+  }
+  
   const showContact = diagnosis.confidence < 75;
 
   const statusConfig = {
@@ -137,23 +240,31 @@ export default function ResultsPage() {
                     <div>
                       <h3 className="font-semibold text-neutral-darker mb-3">Immediate Actions</h3>
                       <ul className="space-y-2">
-                        {diagnosis.treatment.immediate.map((step, i) => (
-                          <li key={i} className="flex items-start gap-3">
-                            <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                            <span className="text-neutral-dark">{step}</span>
-                          </li>
-                        ))}
+                        {diagnosis.treatment.immediate.length > 0 ? (
+                          diagnosis.treatment.immediate.map((step, i) => (
+                            <li key={i} className="flex items-start gap-3">
+                              <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                              <span className="text-neutral-dark">{step}</span>
+                            </li>
+                          ))
+                        ) : (
+                          <li className="text-neutral-muted">No immediate actions recommended</li>
+                        )}
                       </ul>
                     </div>
                     <div>
                       <h3 className="font-semibold text-neutral-darker mb-3">Long-term Care</h3>
                       <ul className="space-y-2">
-                        {diagnosis.treatment.longTerm.map((step, i) => (
-                          <li key={i} className="flex items-start gap-3">
-                            <CheckCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
-                            <span className="text-neutral-dark">{step}</span>
-                          </li>
-                        ))}
+                        {diagnosis.treatment.longTerm.length > 0 ? (
+                          diagnosis.treatment.longTerm.map((step, i) => (
+                            <li key={i} className="flex items-start gap-3">
+                              <CheckCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                              <span className="text-neutral-dark">{step}</span>
+                            </li>
+                          ))
+                        ) : (
+                          <li className="text-neutral-muted">No long-term care recommendations</li>
+                        )}
                       </ul>
                     </div>
                   </motion.div>
@@ -174,12 +285,16 @@ export default function ResultsPage() {
                   <AudioLines className="w-4 h-4" />
                 </button>
                     <ul className="space-y-2">
-                      {diagnosis.treatment.prevention.map((step, i) => (
-                        <li key={i} className="flex items-start gap-3">
-                          <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                          <span className="text-neutral-dark">{step}</span>
-                        </li>
-                      ))}
+                      {diagnosis.treatment.prevention.length > 0 ? (
+                        diagnosis.treatment.prevention.map((step, i) => (
+                          <li key={i} className="flex items-start gap-3">
+                            <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                            <span className="text-neutral-dark">{step}</span>
+                          </li>
+                        ))
+                      ) : (
+                        <li className="text-neutral-muted">No prevention measures recommended</li>
+                      )}
                     </ul>
                   </motion.div>
                 )}
@@ -191,15 +306,13 @@ export default function ResultsPage() {
                     transition={{ duration: 0.3 }}
                     className="space-y-3"
                   >
-                    {mockNurseries.slice(0, 4).map((n) => (
-                      <div key={n.id} className="flex items-center justify-between p-4 rounded-xl border border-neutral">
-                        <div>
-                          <div className="font-semibold text-neutral-darker">{n.name}</div>
-                          <div className="text-sm text-neutral-muted">{n.address}</div>
-                        </div>
-                        <a href={`tel:${n.phone}`} className="text-primary font-medium hover:underline">{n.phone}</a>
-                      </div>
-                    ))}
+                    <div className="text-center py-8">
+                      <AlertTriangle className="w-12 h-12 text-amber-500 mx-auto mb-4" />
+                      <h3 className="text-xl font-semibold text-neutral-darker mb-2">Contact an Expert</h3>
+                      <p className="text-neutral-muted">
+                        For plants with confidence below 75%, we recommend consulting with a local nursery expert.
+                      </p>
+                    </div>
                   </motion.div>
                 )}
               </div>

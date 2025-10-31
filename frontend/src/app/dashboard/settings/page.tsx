@@ -9,6 +9,7 @@ export default function SettingsPage() {
 
   const handleSignOut = () => {
     localStorage.removeItem('plantcare_authenticated');
+    localStorage.removeItem('token');
     router.push('/auth/login');
   };
 
