@@ -1,6 +1,6 @@
 from pathlib import Path
 from fastapi import APIRouter, UploadFile, File,HTTPException, Depends,status
-
+import uuid
 import sys
 import os
 import http.client
@@ -16,6 +16,7 @@ from app.utils.jwt_helper import create_access_token
 # router = APIRouter()
 from app.middleware.auth_utils import get_current_user
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+from datetime import datetime
 
 from app.utils.config import JWT_SECRET_KEY, JWT_ALGORITHM
 
@@ -57,6 +58,7 @@ async def upload_images(files: list[UploadFile] = File(...)):
     # print(json.dumps(outputresponce, indent=2))
     print("djjjjjjjjjjjjjjjjjjjjjjjj",outputresponce)
     mobile="8431036155"
+    
     user = await users_collection.find_one({"mobile": mobile})
     if not user:
         raise HTTPException(
@@ -64,7 +66,12 @@ async def upload_images(files: list[UploadFile] = File(...)):
             detail="User not found"
         )
 
-    # Add plant data to user's 'plantResponses' array
+    # Add extra fields to outputresponce
+    outputresponce["id"] = str(uuid.uuid4())  # unique random ID
+    outputresponce["imageUrl"] = abs_path
+    outputresponce["detectedAt"] = datetime.utcnow().isoformat() + "Z"  # UTC time (you can change to IST if needed)
+
+    # Push updated plant data into user's document
     await users_collection.update_one(
         {"mobile": mobile},
         {"$push": {"plantResponses": outputresponce}}
