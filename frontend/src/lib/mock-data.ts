@@ -11,9 +11,15 @@ export const mockCredentials = {
   number: '1234567890',
   password: '12345678',
 };
+export type DiagnosisStatus = 'healthy' | 'needs-attention' | 'critical';
+export interface Diagnosis {
+  id: string; plantName: string; disease: string; confidence: number; severity: string;
+  imageUrl: string; detectedAt: string; status: DiagnosisStatus;
+  treatment: { immediate: string[]; longTerm: string[]; prevention: string[]; };
+  description: string;
+}
 
-// Mock Plant Diagnoses
-export const mockDiagnoses = [
+export const mockDiagnoses: Diagnosis[] = [
   {
     id: '1',
     plantName: 'Tomato Plant',
@@ -34,7 +40,7 @@ export const mockDiagnoses = [
     id: '2',
     plantName: 'Rose Bush',
     disease: 'Powdery Mildew',
-    confidence: 88,
+    confidence: 68,
     severity: 'Low',
     imageUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400&h=300&fit=crop',
     detectedAt: '2025-01-14T14:20:00Z',
