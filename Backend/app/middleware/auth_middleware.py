@@ -1,12 +1,49 @@
-from fastapi import Header, HTTPException, Depends
-from app.core.security import verify_token
+# from fastapi import Depends, HTTPException, status, Request
+# from fastapi.security import OAuth2PasswordBearer
+# from jose import JWTError, jwt
+# from app.db.database import users_collection
+# from app.utils.config import JWT_SECRET_KEY, JWT_ALGORITHM
 
-def get_current_user(authorization: str = Header(None)):
-    if not authorization:
-        raise HTTPException(status_code=401, detail="Authorization header missing")
+# oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
 
-    token = authorization.replace("Bearer ", "")
-    payload = verify_token(token)
-    if not payload:
-        raise HTTPException(status_code=401, detail="Invalid or expired token")
-    return payload
+# async def get_current_user(request: Request, token: str = Depends(oauth2_scheme)):
+#     # Try to get token from Authorization header first
+#     if not token:
+#         # Fallback: try reading from header manually
+#         auth_header = request.headers.get("Authorization")
+#         if auth_header and auth_header.startswith("Bearer "):
+#             token = auth_header.split(" ")[1]
+#         else:
+#             raise HTTPException(
+#                 status_code=status.HTTP_401_UNAUTHORIZED,
+#                 detail="Authorization token missing",
+#             )
+
+#     try:
+#         # Decode JWT token
+#         payload = jwt.decode(token, JWT_SECRET_KEY, algorithms=[JWT_ALGORITHM])
+#         mobile = payload.get("sub")
+
+#         if mobile is None:
+#             raise HTTPException(
+#                 status_code=status.HTTP_401_UNAUTHORIZED,
+#                 detail="Invalid token payload",
+#             )
+
+#         # Fetch user from DB
+#         user = await users_collection.find_one({"mobile": mobile})
+#         if not user:
+#             raise HTTPException(
+#                 status_code=status.HTTP_404_NOT_FOUND,
+#                 detail="User not found",
+#             )
+
+#         # Remove sensitive info before returning
+#         user.pop("password", None)
+#         return user
+
+#     except JWTError:
+#         raise HTTPException(
+#             status_code=status.HTTP_401_UNAUTHORIZED,
+#             detail="Invalid or expired token",
+#         )
