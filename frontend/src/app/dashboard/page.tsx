@@ -41,7 +41,7 @@ export default function DashboardPage() {
       console.log("Upload response:", res.data);
       setResults(res.data.results);
       alert("✅ Uploaded successfully!");
-      router.push('/chat');
+      router.push('/dashboard/results/1');
     } catch (error) {
       console.error("❌ Upload failed:", error);
       alert("Error uploading files.");
