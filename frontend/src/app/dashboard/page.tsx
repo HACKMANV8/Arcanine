@@ -2,14 +2,15 @@
 
 import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Plus, ArrowRight, Calendar, MessageCircle, MapPin, Camera, Upload, Activity } from 'lucide-react';
+import { Plus, ArrowRight, Calendar, MessageCircle, MapPin, Camera, Upload, Activity, CircleChevronUpIcon } from 'lucide-react';
 import Link from 'next/link';
 import { DiagnosisCard } from '@/components/shared/DiagnosisCard';
 import { mockDiagnoses, mockUser, mockUserPlants } from '@/lib/mock-data';
-// import { useState } from "react";
 import axios from "axios";
+import { useRouter } from 'next/navigation';
 // 
 export default function DashboardPage() {
+  const router = useRouter();
   const [files, setFiles] = useState<File[]>([]);
   const [dragActive, setDragActive] = useState(false);
   const [uploaded, setUploaded] = useState([]);
@@ -40,6 +41,7 @@ export default function DashboardPage() {
       console.log("Upload response:", res.data);
       setResults(res.data.results);
       alert("✅ Uploaded successfully!");
+      router.push('/dashboard/results/1');
     } catch (error) {
       console.error("❌ Upload failed:", error);
       alert("Error uploading files.");
@@ -162,14 +164,14 @@ export default function DashboardPage() {
         disabled={uploading}
         className="inline-flex items-center justify-center gap-2 bg-white text-neutral-darker px-5 py-3 rounded-xl font-medium border border-neutral hover:bg-neutral-light transition-colors"
       >
-        <Camera className="w-5 h-5" />
-        {uploading ? "Uploading..." : "Generate Diagnosis"}
+        <CircleChevronUpIcon className="w-5 h-5" />
+        {uploading ? "Uploading..." : "Upload"}
       </button>
             <Link
               href="/dashboard/chat"
               className="inline-flex items-center justify-center gap-2 bg-white text-neutral-darker px-5 py-3 rounded-xl font-medium border border-neutral hover:bg-neutral-light transition-colors"
             >
-              <MessageCircle className="w-5 h-5" /> Describe Symptoms
+              <MessageCircle className="w-5 h-5" /> Ask AI
             </Link>
           </div>
         </motion.div>

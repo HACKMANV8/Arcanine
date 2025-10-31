@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Leaf, Camera, MapPin, Eye, EyeOff } from 'lucide-react';
+import { Leaf, Camera, MapPin, Eye, EyeOff, SendHorizonal } from 'lucide-react';
 import { mockCredentials } from '@/lib/mock-data';
 
 export default function LoginPage() {
@@ -296,11 +296,11 @@ export default function LoginPage() {
             >
               {activeTab === 'signin' ? (
                 <>
-                  <Camera className="w-5 h-5" /> Sign In
+                  <SendHorizonal className="w-5 h-5" /> Sign In
                 </>
               ) : (
                 <>
-                  <Camera className="w-5 h-5" /> Create Account
+                  <SendHorizonal className="w-5 h-5" /> Create Account
                 </>
               )}
             </button>
