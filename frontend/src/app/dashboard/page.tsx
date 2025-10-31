@@ -2,7 +2,8 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Plus, ArrowRight, Calendar, MessageCircle, MapPin, Camera, Upload, Activity, CircleChevronUpIcon, Loader2 } from 'lucide-react';
+import { Plus, ArrowRight, Calendar, MessageCircle, MapPin, Camera, Upload, Activity } from 'lucide-react';
+import Loader from '@/components/shared/Loader';
 import Link from 'next/link';
 import { DiagnosisCard } from '@/components/shared/DiagnosisCard';
 import { mockDiagnoses, mockUser } from '@/lib/mock-data';
@@ -277,8 +278,16 @@ const handleImageClick = async (mobile: string, plantId: string) => {
               disabled={uploading}
               className="inline-flex items-center justify-center gap-2 bg-white text-neutral-darker px-5 py-3 rounded-xl font-medium border border-neutral hover:bg-neutral-light transition-colors"
             >
-              {uploading ? <Loader2 /> : <CircleChevronUpIcon className="w-5 h-5" />}
-              {uploading ? null : "Upload"}
+              {uploading ? (
+                <div className="flex flex-col items-center">
+                  <Loader />
+                </div>
+              ) : (
+                <>
+                  <Upload className="w-5 h-5" />
+                  Upload
+                </>
+              )}
             </button>
             <Link
               href="/dashboard/chat"
@@ -299,7 +308,7 @@ const handleImageClick = async (mobile: string, plantId: string) => {
           <h3 className="text-lg font-semibold text-neutral-darker mb-4">Quick Stats</h3>
           {loadingPlants ? (
             <div className="flex justify-center items-center h-24">
-              <Loader2 className="w-6 h-6 animate-spin text-primary" />
+              <Loader />
             </div>
           ) : (
             <div className="space-y-3">
@@ -335,7 +344,7 @@ const handleImageClick = async (mobile: string, plantId: string) => {
         </div>
         {loadingPlants ? (
           <div className="flex justify-center items-center h-32">
-            <Loader2 className="w-6 h-6 animate-spin text-primary" />
+            <Loader />
           </div>
         ) : plants.length > 0 ? (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">

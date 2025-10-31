@@ -68,6 +68,22 @@ export const mockDiagnoses: Diagnosis[] = [
     },
     description: 'Your basil plant is thriving! Keep up the good work with regular watering and harvesting.',
   },
+  {
+    id: 'completed-plan-plant',
+    plantName: 'Completed Plan Plant',
+    disease: 'No Disease',
+    confidence: 100,
+    severity: 'None',
+    imageUrl: 'https://images.unsplash.com/photo-1508704019882-f9cf40e99f45?w=400&h=300&fit=crop',
+    detectedAt: '2025-01-01T09:00:00Z',
+    status: 'healthy',
+    treatment: {
+      immediate: [],
+      longTerm: ['Maintain regular watering', 'Monitor for new issues'],
+      prevention: ['Keep area clean', 'Ensure proper sunlight'],
+    },
+    description: 'This plant has successfully completed its 7-day care plan and is now healthy.',
+  },
 ];
 
 // Mock 7-Day Care Plan
@@ -152,6 +168,24 @@ export const mock7DayPlan = {
       notes: '',
     },
   ],
+};
+
+export const mockCompleted7DayPlan = {
+  plantId: 'completed-plan-plant',
+  plantName: 'Completed Plan Plant',
+  disease: 'No Disease',
+  startDate: '2025-01-01',
+  progress: 100,
+  days: Array.from({ length: 7 }, (_, i) => ({
+    day: i + 1,
+    date: `2025-01-0${i + 1}`,
+    status: 'completed',
+    tasks: [
+      { id: `${i + 1}-1`, title: `Task ${i + 1}-1`, completed: true, description: `Description for task ${i + 1}-1` },
+      { id: `${i + 1}-2`, title: `Task ${i + 1}-2`, completed: true, description: `Description for task ${i + 1}-2` },
+    ],
+    notes: `Notes for day ${i + 1}`,
+  })),
 };
 
 // Mock Chat Messages
