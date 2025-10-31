@@ -1,4 +1,5 @@
 from pathlib import Path
+from ssl import MemoryBIO
 from fastapi import APIRouter, UploadFile, File,HTTPException, Depends,status
 import uuid
 import sys
@@ -90,10 +91,10 @@ async def upload_images(files: list[UploadFile] = File(...)):
 
     return {"message": "Plant response added successfully!"}
 
-@router.post("/getnurseries")
+@router.get("/getnurseries/{mobile}/")
 def getnurseries():
     conn = http.client.HTTPSConnection("api.openwebninja.com")
-    headers = { 'x-api-key': "" }
+    headers = { 'x-api-key': "ak_2owr3nlwk5na9ep3vomvavhzo48h00mompbyd1u2mbpqgwn" }
 
     # Example: search for plant nurseries near Delhi
     params = urllib.parse.urlencode({
@@ -130,7 +131,7 @@ def getnurseries():
 
     # Print in pretty JSON format
     print(json.dumps(filtered_results, indent=2,ensure_ascii=False))
-
+    return filtered_results
     # # Optional — save to a JSON file
     # with open("nurseries_filtered.json", "w", encoding="utf-8") as f:
     #     json.dump(filtered_results, f, indent=2, ensure_ascii=False)
