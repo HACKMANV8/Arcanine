@@ -21,8 +21,8 @@ from datetime import datetime
 from app.utils.config import JWT_SECRET_KEY, JWT_ALGORITHM
 
 sys.path.append(r'D:\Hacktons\HackMan\AI')
-import prediction
-import testing
+import prediction  # type: ignore
+import testing    # type: ignore
 
 router = APIRouter(prefix="/transcript", tags=["Transcript"])
 
@@ -37,24 +37,34 @@ async def upload_images(files: list[UploadFile] = File(...)):
     """
     urls = []
 
+    # Process the first file for prediction (assuming single file upload for now)
+    first_file = files[0] if files else None
+    image_url = ""
+    
     for file in files:
-        file_path = UPLOAD_DIR / file.filename
-        with open(file_path, "wb") as buffer:
-            buffer.write(await file.read())
+        if file.filename:
+            file_path = UPLOAD_DIR / file.filename
+            with open(file_path, "wb") as buffer:
+                buffer.write(await file.read())
 
-        abs_path = str(file_path.resolve())
-        print(f"✅ File saved at: {abs_path}")
+            abs_path = str(file_path.resolve())
+            print(f"✅ File saved at: {abs_path}")
 
-        try:
-            testing.getdataresponce(abs_path)
-        except Exception as e:
-            print(f"⚠️ Prediction failed for {file.filename}: {e}")
+            # Store the image URL for the first file
+            if file == first_file:
+                image_url = f"/uploads/{file.filename}"
 
-        urls.append({
-            "filename": file.filename,
-            "url": f"/uploads/{file.filename}"
-        })
-    outputresponce= testing.finalize_results()
+            try:
+                testing.getdataresponce(abs_path)
+            except Exception as e:
+                print(f"⚠️ Prediction failed for {file.filename}: {e}")
+
+            urls.append({
+                "filename": file.filename,
+                "url": f"/uploads/{file.filename}"
+            })
+            
+    outputresponce = testing.finalize_results()
     # print(json.dumps(outputresponce, indent=2))
     print("djjjjjjjjjjjjjjjjjjjjjjjj",outputresponce)
     mobile="8431036155"
@@ -68,7 +78,8 @@ async def upload_images(files: list[UploadFile] = File(...)):
 
     # Add extra fields to outputresponce
     outputresponce["id"] = str(uuid.uuid4())  # unique random ID
-    outputresponce["imageUrl"] = abs_path
+    # Store web-accessible URL instead of absolute file path
+    outputresponce["imageUrl"] = image_url
     outputresponce["detectedAt"] = datetime.utcnow().isoformat() + "Z"  # UTC time (you can change to IST if needed)
 
     # Push updated plant data into user's document
@@ -82,7 +93,7 @@ async def upload_images(files: list[UploadFile] = File(...)):
 @router.post("/getnurseries")
 def getnurseries():
     conn = http.client.HTTPSConnection("api.openwebninja.com")
-    headers = { 'x-api-key': "ak_5ghyta27khzm91rfxpkwagm7jr36502soapz9wbevka5wrm" }
+    headers = { 'x-api-key': "" }
 
     # Example: search for plant nurseries near Delhi
     params = urllib.parse.urlencode({
@@ -171,3 +182,42 @@ def getdata():
 #         "message": "Welcome to your dashboard!",
 #         "user": current_user
 #     }
+
+
+@router.get("/plant/{mobile}/{plant_id}")
+async def get_plant_details(mobile: str, plant_id: str):
+    """
+    Get details of a specific plant response by ID for a given user.
+    """
+    user = await users_collection.find_one({"mobile": mobile})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    plant_responses = user.get("plantResponses", [])
+    for plant in plant_responses:
+        if plant.get("id") == plant_id:
+            return plant  # return the whole plant data
+
+    raise HTTPException(status_code=404, detail="Plant not found")
+
+@router.get("/plant/{mobile}")
+async def get_all_plants(mobile: str):
+    """
+    Fetch all plant analysis data for a user using their mobile number.
+    """
+    user = await users_collection.find_one({"mobile": mobile})
+
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
+
+    plant_data = user.get("plantResponses", [])
+
+    if not plant_data:
+        return {"message": "No plant data found for this user.", "plants": []}
+
+    return {"plants": plant_data}
+
+

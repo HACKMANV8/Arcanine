@@ -1,48 +1,48 @@
-# import requests
-# import json
-# API_KEY = "QiYe8COtkjeYV3h2sS6oA7jr13lRTDqv"  # replace with your Tomorrow.io API key
-# LOCATION = "nipani"
+import requests
+import json
+API_KEY = "QiYe8COtkjeYV3h2sS6oA7jr13lRTDqv"  # replace with your Tomorrow.io API key
+LOCATION = "nipani"
 
-# url = f"https://api.tomorrow.io/v4/weather/forecast?location={LOCATION}&apikey={API_KEY}"
+url = f"https://api.tomorrow.io/v4/weather/forecast?location={LOCATION}&apikey={API_KEY}"
 
-# headers = {
-#     "accept": "application/json",
-#     "accept-encoding": "deflate, gzip, br"
-# }
+headers = {
+    "accept": "application/json",
+    "accept-encoding": "deflate, gzip, br"
+}
 
-# response = requests.get(url, headers=headers)
+response = requests.get(url, headers=headers)
 
-# if response.status_code == 200:
-#     data = response.json()
-#     daily_data = data.get("timelines", {}).get("daily", [])
+if response.status_code == 200:
+    data = response.json()
+    daily_data = data.get("timelines", {}).get("daily", [])
 
-#     result = []
+    result = []
 
-#     for day in daily_data[:7]:  # next 7 days only
-#         date = day["time"].split("T")[0]
-#         v = day["values"]
+    for day in daily_data[:7]:  # next 7 days only
+        date = day["time"].split("T")[0]
+        v = day["values"]
 
-#         day_summary = {
-#             "date": date,
-#             "temperature": {
-#                 "min": v.get("temperatureMin"),
-#                 "max": v.get("temperatureMax"),
-#                 "avg": v.get("temperatureAvg")
-#             },
-#             "humidity": v.get("humidityAvg"),
-#             "rain_chance": v.get("precipitationProbabilityAvg"),
-#             "rain_intensity": v.get("precipitationIntensityAvg"),
-#             "wind_speed": v.get("windSpeedAvg"),
-#             "cloud_cover": v.get("cloudCoverAvg"),
-#             "uv_index": v.get("uvIndexAvg"),
-#             "dew_point": v.get("dewPointAvg"),
-#             "soil_moisture": v.get("soilMoistureAvg", "N/A"),
-#             "weather_code": v.get("weatherCodeMax")
-#         }
+        day_summary = {
+            "date": date,
+            "temperature": {
+                "min": v.get("temperatureMin"),
+                "max": v.get("temperatureMax"),
+                "avg": v.get("temperatureAvg")
+            },
+            "humidity": v.get("humidityAvg"),
+            "rain_chance": v.get("precipitationProbabilityAvg"),
+            "rain_intensity": v.get("precipitationIntensityAvg"),
+            "wind_speed": v.get("windSpeedAvg"),
+            "cloud_cover": v.get("cloudCoverAvg"),
+            "uv_index": v.get("uvIndexAvg"),
+            "dew_point": v.get("dewPointAvg"),
+            "soil_moisture": v.get("soilMoistureAvg", "N/A"),
+            "weather_code": v.get("weatherCodeMax")
+        }
 
-#         result.append(day_summary)
-#     print(result)
-#     # --- Save to JSON file ---
+        result.append(day_summary)
+    print(result)
+    # --- Save to JSON file ---
 
 
 # import http.client

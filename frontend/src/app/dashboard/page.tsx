@@ -2,15 +2,27 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Plus, ArrowRight, Calendar, MessageCircle, MapPin, Camera, Upload, Activity, UserRound } from 'lucide-react';
+import { Plus, ArrowRight, Calendar, MessageCircle, MapPin, Camera, Upload, Activity, UserRound, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { DiagnosisCard } from '@/components/shared/DiagnosisCard';
-import { mockDiagnoses, mockUser, mockUserPlants } from '@/lib/mock-data';
+import { mockDiagnoses, mockUser } from '@/lib/mock-data';
 // import { useState } from "react";
 import axios from "axios";
 import { link } from 'fs';
 import { useRouter } from 'next/navigation';
 // import axios from "axios";
+
+interface Plant {
+  id: string;
+  name: string;
+  species: string;
+  status: 'healthy' | 'needs-attention';
+  lastChecked: string;
+  health: number;
+  imageUrl: string;
+  location: string;
+  notes: string;
+}
 
 export default function DashboardPage() {
   const router=useRouter();
@@ -19,10 +31,70 @@ export default function DashboardPage() {
   const [uploaded, setUploaded] = useState([]);
   const [uploading, setUploading] = useState(false);
   const recentDiagnoses = mockDiagnoses.slice(0, 4);
-  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [selectedFiles, setSelectedFiles] = useState([] as any);
   const [userData, setUserData] = useState(null);
   const [results, setResults] = useState([]);
   const [token, setToken] = useState<string | null>(null);
+  const [plants, setPlants] = useState<Plant[]>([]);
+  const [loadingPlants, setLoadingPlants] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Fetch plants data from backend
+  useEffect(() => {
+    const fetchPlants = async () => {
+      try {
+        setLoadingPlants(true);
+        // Get token from localStorage
+        const token = localStorage.getItem('token');
+        const mobile = '8431036155'; // This should come from the authenticated user
+        
+        // Fetch all plants for the user
+        const response = await fetch(`http://localhost:8000/transcript/plant/${mobile}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch plants data');
+        }
+        
+        const data = await response.json();
+        console.log('Plants data:', data);
+        
+        // Transform the data to match our Plant interface
+        const transformedPlants = data.plants.map((plant: any) => ({
+          id: plant.id || '',
+          name: plant.plantName || 'Unknown Plant',
+          species: plant.disease || 'Unknown Species',
+          status: plant.confidence >= 80 ? 'healthy' : 'needs-attention',
+          lastChecked: new Date(plant.detectedAt || new Date()).toLocaleDateString(),
+          health: plant.confidence || 0,
+          // Fix image URL to be web-accessible
+          imageUrl: plant.imageUrl ? `http://localhost:8000/uploads/${plant.imageUrl.split('/').pop()}` : 'https://images.unsplash.com/photo-1592841200221-a6898f307baa?w=400&h=300&fit=crop',
+          location: 'Garden', // This could come from user data
+          notes: plant.description || 'No additional notes',
+        }));
+        
+        setPlants(transformedPlants);
+      } catch (err) {
+        console.error('Error fetching plants:', err);
+        setError('Failed to load plants data');
+      } finally {
+        setLoadingPlants(false);
+      }
+    };
+    
+    fetchPlants();
+  }, []);
+  
+  const stats = useMemo(() => {
+    const total = plants.length;
+    const healthy = plants.filter(p => p.status === 'healthy').length;
+    const critical = plants.filter(p => p.status === 'needs-attention').length;
+    return { total, healthy, critical };
+  }, [plants]);
 
   // const token = localStorage.getItem("token");
 
@@ -55,6 +127,22 @@ export default function DashboardPage() {
   //     console.error("Error fetching dashboard:", error);
   //   }
   // };
+  
+const handleImageClick = async (mobile: string, plantId: string) => {
+  try {
+    const response = await axios.get(`http://127.0.0.1:8000/plant/${mobile}/${plantId}`);
+    console.log("🌿 Plant details:", response.data);
+    
+    // You can set the data into state to show in a modal or details card
+    // setSelectedPlant(response.data);
+  } catch (error) {
+    if (error.response) {
+      console.error("❌ Error fetching plant details:", error.response.data.detail);
+    } else {
+      console.error("⚠️ Network or server error:", error.message);
+    }
+  }
+};
   const handleUpload = async () => {
     if (selectedFiles.length === 0) {
       alert("Please select at least one image!");
@@ -62,7 +150,7 @@ export default function DashboardPage() {
     }
 
     const formData = new FormData();
-    selectedFiles.forEach((file) => formData.append("files", file));
+    selectedFiles.forEach((file: any) => formData.append("files", file));
 
     try {
       setUploading(true);
@@ -87,13 +175,6 @@ export default function DashboardPage() {
     { title: 'My Plants', description: 'Manage collection', href: '/dashboard/plants', icon: Calendar },
     { title: 'Settings', description: 'Personalize app', href: '/dashboard/settings', icon: Activity },
   ];
-
-  const stats = useMemo(() => {
-    const total = mockUserPlants.length;
-    const healthy = mockUserPlants.filter(p => p.status === 'healthy').length;
-    const critical = mockUserPlants.filter(p => p.status === 'needs-attention').length;
-    return { total, healthy, critical };
-  }, []);
 
   const onFilesSelected = (incoming: FileList | File[]) => {
     const incomingArray = Array.from(incoming);
@@ -216,20 +297,26 @@ export default function DashboardPage() {
           className="bg-white rounded-2xl p-5 md:p-6 border border-neutral shadow-sm"
         >
           <h3 className="text-lg font-semibold text-neutral-darker mb-4">Quick Stats</h3>
-          <div className="space-y-3">
-            <div className="flex items-center justify-between p-3 rounded-xl bg-neutral-light">
-              <span className="text-neutral-muted">Total Plants</span>
-              <span className="font-semibold text-neutral-darker">{stats.total}</span>
+          {loadingPlants ? (
+            <div className="flex justify-center items-center h-24">
+              <Loader2 className="w-6 h-6 animate-spin text-primary" />
             </div>
-            <div className="flex items-center justify-between p-3 rounded-xl bg-green-50 border border-green-100">
-              <span className="text-green-700">Healthy</span>
-              <span className="font-semibold text-green-700">{stats.healthy}</span>
+          ) : (
+            <div className="space-y-3">
+              <div className="flex items-center justify-between p-3 rounded-xl bg-neutral-light">
+                <span className="text-neutral-muted">Total Plants</span>
+                <span className="font-semibold text-neutral-darker">{stats.total}</span>
+              </div>
+              <div className="flex items-center justify-between p-3 rounded-xl bg-green-50 border border-green-100">
+                <span className="text-green-700">Healthy</span>
+                <span className="font-semibold text-green-700">{stats.healthy}</span>
+              </div>
+              <div className="flex items-center justify-between p-3 rounded-xl bg-amber-50 border border-amber-100">
+                <span className="text-amber-700">Needs Attention</span>
+                <span className="font-semibold text-amber-700">{stats.critical}</span>
+              </div>
             </div>
-            <div className="flex items-center justify-between p-3 rounded-xl bg-amber-50 border border-amber-100">
-              <span className="text-amber-700">Needs Attention</span>
-              <span className="font-semibold text-amber-700">{stats.critical}</span>
-            </div>
-          </div>
+          )}
         </motion.div>
       </div>
 
@@ -246,11 +333,53 @@ export default function DashboardPage() {
             View All <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-          {recentDiagnoses.map((diagnosis, index) => (
-            <DiagnosisCard key={diagnosis.id} diagnosis={diagnosis} index={index} />
-          ))}
-        </div>
+        {loadingPlants ? (
+          <div className="flex justify-center items-center h-32">
+            <Loader2 className="w-6 h-6 animate-spin text-primary" />
+          </div>
+        ) : plants.length > 0 ? (
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+            {plants.slice(0, 4).map((plant, index) => (
+              <motion.div
+                key={plant.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+                className="bg-white rounded-xl overflow-hidden shadow-soft hover:shadow-soft-lg transition-all duration-200 group cursor-pointer"
+                onClick={() => router.push(`/dashboard/results/${plant.id}`)}
+              >
+                <div className="relative h-32 overflow-hidden">
+                  <img
+                    src={plant.imageUrl}
+                    alt={plant.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                  />
+                  <div className={`absolute top-2 right-2 ${
+                    plant.status === 'healthy' 
+                      ? 'bg-green-50 border border-green-200 text-green-600' 
+                      : 'bg-amber-50 border border-amber-200 text-amber-600'
+                  } px-2 py-1 rounded-full flex items-center gap-1 text-xs`}>
+                    <span>{plant.health}%</span>
+                  </div>
+                </div>
+                <div className="p-3">
+                  <h3 className="font-bold text-neutral-darker truncate">{plant.name}</h3>
+                  <p className="text-xs text-neutral-muted truncate">{plant.species}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        ) : (
+          <div className="bg-white rounded-xl p-6 text-center border border-neutral">
+            <p className="text-neutral-muted">No plants diagnosed yet.</p>
+            <Link 
+              href="/dashboard/plants" 
+              className="inline-flex items-center gap-1 text-primary font-medium mt-2"
+            >
+              View All Plants <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        )}
       </motion.div>
 
       {/* Quick Actions */}
@@ -282,16 +411,12 @@ export default function DashboardPage() {
       </motion.div>
 
       {/* FAB */}
-      <Link href="#">
+      <Link href="#hero-upload">
         <motion.button
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ duration: 0.3, delay: 0.6 }}
           className="md:hidden fixed bottom-24 right-6 w-14 h-14 bg-primary rounded-full shadow-soft-lg flex items-center justify-center text-white hover:bg-primary-dark transition-all z-40"
-          onClick={(e) => {
-            e.preventDefault();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
         >
           <Camera className="w-6 h-6" />
         </motion.button>
