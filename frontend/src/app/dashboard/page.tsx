@@ -8,7 +8,9 @@ import { DiagnosisCard } from '@/components/shared/DiagnosisCard';
 import { mockDiagnoses, mockUser, mockUserPlants } from '@/lib/mock-data';
 import axios from "axios";
 import { useRouter } from 'next/navigation';
-// 
+import Loader from '@/components/shared/Loader';
+import './loader.css';
+
 export default function DashboardPage() {
   const router = useRouter();
   const [files, setFiles] = useState<File[]>([]);
@@ -17,7 +19,6 @@ export default function DashboardPage() {
   const [uploading, setUploading] = useState(false);
   const recentDiagnoses = mockDiagnoses.slice(0, 4);
   const [selectedFiles, setSelectedFiles] = useState([]);
-  // const [uploading, setUploading] = useState(false);
   const [results, setResults] = useState([]);
 
   const handleInput = (e:React.ChangeEvent<HTMLInputElement>) => {
@@ -160,13 +161,13 @@ export default function DashboardPage() {
           {/* CTAs */}
           <div className="mt-6 flex flex-col sm:flex-row gap-3">
             <button
-        onClick={handleUpload}
-        disabled={uploading}
-        className="inline-flex items-center justify-center gap-2 bg-white text-neutral-darker px-5 py-3 rounded-xl font-medium border border-neutral hover:bg-neutral-light transition-colors"
-      >
-        <CircleChevronUpIcon className="w-5 h-5" />
-        {uploading ? "Uploading..." : "Upload"}
-      </button>
+              onClick={handleUpload}
+              disabled={uploading}
+              className="inline-flex items-center justify-center gap-2 bg-white text-neutral-darker px-5 py-3 rounded-xl font-medium border border-neutral hover:bg-neutral-light transition-colors"
+            >
+              {uploading ? <Loader /> : <CircleChevronUpIcon className="w-5 h-5" />}
+              {uploading ? null : "Upload"}
+            </button>
             <Link
               href="/dashboard/chat"
               className="inline-flex items-center justify-center gap-2 bg-white text-neutral-darker px-5 py-3 rounded-xl font-medium border border-neutral hover:bg-neutral-light transition-colors"
