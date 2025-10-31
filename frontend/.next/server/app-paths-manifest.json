@@ -1,9 +1,9 @@
 {
-  "/dashboard/marketplace/page": "app/dashboard/marketplace/page.js",
-  "/dashboard/results/[id]/page": "app/dashboard/results/[id]/page.js",
   "/dashboard/manage-listing/page": "app/dashboard/manage-listing/page.js",
-  "/dashboard/plans/page": "app/dashboard/plans/page.js",
-  "/dashboard/list-produce/page": "app/dashboard/list-produce/page.js",
+  "/dashboard/marketplace/page": "app/dashboard/marketplace/page.js",
   "/dashboard/plants/page": "app/dashboard/plants/page.js",
+  "/dashboard/results/[id]/page": "app/dashboard/results/[id]/page.js",
+  "/dashboard/list-produce/page": "app/dashboard/list-produce/page.js",
+  "/dashboard/plans/page": "app/dashboard/plans/page.js",
   "/dashboard/page": "app/dashboard/page.js"
 }
