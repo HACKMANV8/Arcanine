@@ -108,7 +108,7 @@ export default function PlansPage() {
                     <div className="flex-1">
                       <p className={`${
                         task.completed
-                          ? 'text-neutral-muted line-through'
+                          ? 'text-neutral-muted '
                           : 'text-neutral-dark font-medium'
                       }`}>
                         {task.title}
