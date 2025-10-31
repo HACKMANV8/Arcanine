@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Calendar, Share2, Download, CheckCircle, AlertCircle, Mic } from 'lucide-react';
+import { ArrowLeft, Calendar, Share2, Download, CheckCircle, AlertCircle, AudioLines } from 'lucide-react';
 import Link from 'next/link';
 import { mockDiagnoses, mockNurseries } from '@/lib/mock-data';
 import { useParams } from 'next/navigation';
@@ -111,7 +111,7 @@ export default function ResultsPage() {
                   onClick={() => alert('Voice (Mock)')}
                   aria-label="Voice"
                 >
-                  <Mic className="w-4 h-4" />
+                  <AudioLines className="w-4 h-4" />
                 </button>
                     <p className="text-neutral-dark leading-relaxed">
                       {diagnosis.description}
@@ -132,7 +132,7 @@ export default function ResultsPage() {
                   onClick={() => alert('Voice (Mock)')}
                   aria-label="Voice"
                 >
-                  <Mic className="w-4 h-4" />
+                  <AudioLines className="w-4 h-4" />
                 </button>
                     <div>
                       <h3 className="font-semibold text-neutral-darker mb-3">Immediate Actions</h3>
@@ -171,7 +171,7 @@ export default function ResultsPage() {
                   onClick={() => alert('Voice (Mock)')}
                   aria-label="Voice"
                 >
-                  <Mic className="w-4 h-4" />
+                  <AudioLines className="w-4 h-4" />
                 </button>
                     <ul className="space-y-2">
                       {diagnosis.treatment.prevention.map((step, i) => (
@@ -250,7 +250,7 @@ export default function ResultsPage() {
               <div className="space-y-3">
                 <Link
                   href="/dashboard/plans"
-                  className="block w-full bg-primary hover:bg-primary-dark text-white font-medium py-3 rounded-xl text-center transition-all duration-200 flex items-center justify-center gap-2"
+                  className="w-full bg-primary hover:bg-primary-dark text-white font-medium py-3 rounded-xl text-center transition-all duration-200 flex items-center justify-center gap-2"
                 >
                   <Calendar className="w-5 h-5" />
                   View 7-Day Plan
