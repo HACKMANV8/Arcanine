@@ -5,7 +5,7 @@ import numpy as np
 import json
 import google.generativeai as genai
 
-genai.configure(api_key="AIzaSyB0v5KTpHCvMFHelEkbjXlKzLuDbjMDQUQ")
+genai.configure(api_key="")
 model_gemini = genai.GenerativeModel("gemini-2.5-flash")
 
 TEMP_FILE = os.path.join(os.path.dirname(__file__), "results_temp.json")
