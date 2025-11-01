@@ -5,7 +5,7 @@ import ast
 from typing import List, Dict, Any, Optional
 
 # 🔑 Configure Gemini API key
-genai.configure(api_key="AIzaSyBqavnVOAsQUKuhY999fYNllkHpPHLJ7Y8")
+genai.configure(api_key="")
 
 
 def generate_7day_plan_via_gemini(

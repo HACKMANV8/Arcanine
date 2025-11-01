@@ -32,7 +32,7 @@ router = APIRouter(prefix="/transcript", tags=["Transcript"])
 UPLOAD_DIR = Path(__file__).resolve().parent.parent / "uploads"
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 def getwed():
-    API_KEY = "QiYe8COtkjeYV3h2sS6oA7jr13lRTDqv"  # replace with your Tomorrow.io API key
+    API_KEY = ""  # replace with your Tomorrow.io API key
     LOCATION = "delhi"
 
     url = f"https://api.tomorrow.io/v4/weather/forecast?location={LOCATION}&apikey={API_KEY}"
@@ -187,7 +187,7 @@ async def upload_images(files: list[UploadFile] = File(...)):
 @router.get("/getnurseries/{mobile}/")
 def getnurseries():
     conn = http.client.HTTPSConnection("api.openwebninja.com")
-    headers = { 'x-api-key': "ak_2owr3nlwk5na9ep3vomvavhzo48h00mompbyd1u2mbpqgwn" }
+    headers = { 'x-api-key': "" }
 
     # Example: search for plant nurseries near Delhi
     params = urllib.parse.urlencode({
