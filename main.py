@@ -1,7 +1,7 @@
 import requests
 import json
 API_KEY = "QiYe8COtkjeYV3h2sS6oA7jr13lRTDqv"  # replace with your Tomorrow.io API key
-LOCATION = "nipani"
+LOCATION = "delhi"
 
 url = f"https://api.tomorrow.io/v4/weather/forecast?location={LOCATION}&apikey={API_KEY}"
 
@@ -49,15 +49,70 @@ if response.status_code == 200:
 # import urllib.parse
 # import json
 
+# # ✅ Replace with your actual OpenWebNinja API key
+# API_KEY = "sk-ak_2owr3nlwk5na9ep3vomvavhzo48h00mompbyd1u2mbpqgwn"
+
 # # Setup
 # conn = http.client.HTTPSConnection("api.openwebninja.com")
-# headers = { 'x-api-key': "ak_5ghyta27khzm91rfxpkwagm7jr36502soapz9wbevka5wrm" }
+# headers = {'x-api-key': API_KEY}
 
 # # Example: search for plant nurseries near Delhi
 # params = urllib.parse.urlencode({
 #     "query": "plant nursery",
-#     "lat": 16.3994,
-#     "lng": 74.3827,
+#     "lat": 28.7041,
+#     "lng": 77.1025,
+#     "radius": 15000  # 15 km
+# })
+
+# # Make request
+# conn.request("GET", f"/local-business-data/search?{params}", headers=headers)
+
+# # Get response
+# res = conn.getresponse()
+# data = res.read()
+
+# # Parse and pretty print JSON
+# result = json.loads(data.decode("utf-8"))
+
+# # Debug print full API response
+# print("🔍 Full API Response:")
+# print(json.dumps(result, indent=2))
+
+# # Handle possible API error
+# if result.get("status") == "ERROR":
+#     print("❌ API Error:", result.get("error", {}))
+# else:
+#     # Extract only needed fields
+#     filtered_results = []
+#     for business in result.get("data", []):
+#         filtered = {
+#             "name": business.get("name"),
+#             "rating": business.get("rating"),
+#             "opening_status": business.get("opening_status"),
+#             "place_link": business.get("place_link"),
+#             "owner_name": business.get("owner_name"),
+#             "type": business.get("type"),
+#             "address": business.get("address"),
+#         }
+#         filtered_results.append(filtered)
+
+#     # Print only useful info if available
+#     print("\n✅ Filtered Results:")
+#     print(json.dumps(filtered_results, indent=2, ensure_ascii=False))
+
+# import http.client
+# import urllib.parse
+# import json
+
+# # Setup
+# conn = http.client.HTTPSConnection("api.openwebninja.com")
+# headers = { 'x-api-key': "ak_2owr3nlwk5na9ep3vomvavhzo48h00mompbyd1u2mbpqgwn" }
+
+# # Example: search for plant nurseries near Delhi
+# params = urllib.parse.urlencode({
+#     "query": "plant nursery",
+#     "lat": 28.7041,
+#     "lng": 77.1025,
 #     "radius": 15000  # 15 km
 # })
 
@@ -89,9 +144,9 @@ if response.status_code == 200:
 # # Print in pretty JSON format
 # print(json.dumps(filtered_results, indent=2,ensure_ascii=False))
 
-# # # Optional — save to a JSON file
-# # with open("nurseries_filtered.json", "w", encoding="utf-8") as f:
-# #     json.dump(filtered_results, f, indent=2, ensure_ascii=False)
+# # Optional — save to a JSON file
+# with open("nurseries_filtered.json", "w", encoding="utf-8") as f:
+#     json.dump(filtered_results, f, indent=2, ensure_ascii=False)
 
 
 

@@ -330,11 +330,11 @@ export default function LoginPage() {
         >
           {activeTab === 'signin' ? (
             <>
-              <Camera className="w-5 h-5" /> Sign In
+              <SendHorizonal className="w-5 h-5" /> Sign In
             </>
           ) : (
             <>
-              <Camera className="w-5 h-5" /> Create Account
+              <SendHorizonal className="w-5 h-5" /> Create Account
             </>
           )}
         </button>

@@ -158,11 +158,11 @@ const handleImageClick = async (mobile: string, plantId: string) => {
       const res = await axios.post("http://127.0.0.1:8000/transcript/upload/", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-
-      console.log("Upload response:", res.data);
+      console.log("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj",res.data)
+      // console.log("Upload response:", res.data);
       setResults(res.data.results);
-      alert("✅ Uploaded successfully!");
-      router.push('/dashboard/results/1');
+      // alert("✅ Uploaded successfully!");
+      router.push(`/dashboard/results/${res.data.id}`);
     } catch (error) {
       console.error("❌ Upload failed:", error);
       alert("Error uploading files.");

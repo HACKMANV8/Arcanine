@@ -7,8 +7,8 @@ import { Home, Camera, Calendar, MessageCircle, MapPin, Leaf, Settings, Shopping
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: Home },
   { name: 'My Plants', href: '/dashboard/plants', icon: Leaf },
-  { name: 'Care Plans', href: '/dashboard/plans', icon: Calendar },
-  { name: 'Chat', href: '/dashboard/chat', icon: MessageCircle },
+  // { name: 'Care Plans', href: '/dashboard/plans', icon: Calendar },
+  // { name: 'Chat', href: '/dashboard/chat', icon: MessageCircle },
   { name: 'Nurseries', href: '/dashboard/nurseries', icon: MapPin },
   { name: 'Marketplace', href: '/dashboard/marketplace', icon: ShoppingCart },
   { name: 'Settings', href: '/dashboard/settings', icon: Settings },
