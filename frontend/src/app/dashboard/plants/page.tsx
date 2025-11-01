@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { AlertCircle, CheckCircle, Clock, Loader2, Leaf } from 'lucide-react';
+import { AlertCircle, CheckCircle, Clock, Loader2, Leaf, Calendar } from 'lucide-react';
 
 interface Plant {
   id: string;
@@ -188,50 +188,65 @@ export default function PlantsPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: index * 0.1 }}
               >
-                <Link href={`/dashboard/results/${plant.id}`}>
-                  <div className="bg-white rounded-xl overflow-hidden shadow-soft hover:shadow-soft-lg transition-all duration-200 group">
-                    {/* Image */}
-                    <div className="relative h-48 overflow-hidden">
-                      <img
-                        src={plant.imageUrl}
-                        alt={plant.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
-                      />
-                      <div className={`absolute top-3 right-3 ${config.bg} ${config.border} border px-3 py-2 rounded-full flex items-center gap-2`}>
-                        <Icon className={`w-4 h-4 ${config.color}`} />
-                        <span className={`text-sm font-medium ${config.color}`}>
-                          {plant.health}%
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-5">
-                      <h3 className="text-lg font-bold text-neutral-darker mb-1">
-                        {plant.name}
-                      </h3>
-                      <p className="text-sm text-neutral-muted mb-3 italic">
-                        {plant.species}
-                      </p>
-                      
-                      <div className="space-y-2 mb-4">
-                        <div className="flex items-center gap-2 text-sm text-neutral-dark">
-                          <Clock className="w-4 h-4 text-neutral-muted" />
-                          <span>Last checked: {plant.lastChecked}</span>
-                        </div>
-                        <p className="text-sm text-neutral-muted">
-                          📍 {plant.location}
-                        </p>
-                      </div>
-
-                      {plant.notes && (
-                        <div className="bg-neutral-light rounded-lg p-3">
-                          <p className="text-sm text-neutral-dark">{plant.notes}</p>
-                        </div>
-                      )}
+                <div className="bg-white rounded-xl overflow-hidden shadow-soft hover:shadow-soft-lg transition-all duration-200 group">
+                  {/* Image */}
+                  <div className="relative h-48 overflow-hidden">
+                    <img
+                      src={plant.imageUrl}
+                      alt={plant.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                    />
+                    <div className={`absolute top-3 right-3 ${config.bg} ${config.border} border px-3 py-2 rounded-full flex items-center gap-2`}>
+                      <Icon className={`w-4 h-4 ${config.color}`} />
+                      <span className={`text-sm font-medium ${config.color}`}>
+                        {plant.health}%
+                      </span>
                     </div>
                   </div>
-                </Link>
+
+                  {/* Content */}
+                  <div className="p-5">
+                    <h3 className="text-lg font-bold text-neutral-darker mb-1">
+                      {plant.name}
+                    </h3>
+                    <p className="text-sm text-neutral-muted mb-3 italic">
+                      {plant.species}
+                    </p>
+                    
+                    <div className="space-y-2 mb-4">
+                      <div className="flex items-center gap-2 text-sm text-neutral-dark">
+                        <Clock className="w-4 h-4 text-neutral-muted" />
+                        <span>Last checked: {plant.lastChecked}</span>
+                      </div>
+                      <p className="text-sm text-neutral-muted">
+                        📍 {plant.location}
+                      </p>
+                    </div>
+
+                    {plant.notes && (
+                      <div className="bg-neutral-light rounded-lg p-3 mb-4">
+                        <p className="text-sm text-neutral-dark">{plant.notes}</p>
+                      </div>
+                    )}
+                    
+                    {/* Action Buttons */}
+                    <div className="flex gap-2">
+                      <Link 
+                        href={`/dashboard/results/${plant.id}`}
+                        className="flex-1 bg-white border border-neutral text-neutral-darker font-medium py-2 rounded-lg text-center hover:bg-neutral-light transition-colors"
+                      >
+                        View Details
+                      </Link>
+                      <Link
+                        href={`/dashboard/plans/${plant.id}`}
+                        className="flex items-center gap-1 bg-primary hover:bg-primary-dark text-white font-medium py-2 px-3 rounded-lg transition-colors"
+                      >
+                        <Calendar className="w-4 h-4" />
+                        <span>7-Day Plan</span>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
               </motion.div>
             );
           })}

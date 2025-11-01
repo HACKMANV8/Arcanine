@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Plus, ArrowRight, Calendar, MessageCircle, MapPin, Camera, Upload, Activity, UserRound, Loader2 } from 'lucide-react';
+import { Plus, ArrowRight, Calendar, MessageCircle, MapPin, Camera, Upload, Activity, CircleChevronUpIcon, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { DiagnosisCard } from '@/components/shared/DiagnosisCard';
 import { mockDiagnoses, mockUser } from '@/lib/mock-data';
@@ -157,11 +157,11 @@ const handleImageClick = async (mobile: string, plantId: string) => {
       const res = await axios.post("http://127.0.0.1:8000/transcript/upload/", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-
-      console.log("Upload response:", res.data);
+      console.log("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj",res.data)
+      // console.log("Upload response:", res.data);
       setResults(res.data.results);
-      router.push('/dashboard/results/1');
       // alert("✅ Uploaded successfully!");
+      router.push(`/dashboard/results/${res.data.id}`);
     } catch (error) {
       console.error("❌ Upload failed:", error);
       alert("Error uploading files.");
@@ -273,18 +273,18 @@ const handleImageClick = async (mobile: string, plantId: string) => {
           {/* CTAs */}
           <div className="mt-6 flex flex-col sm:flex-row gap-3">
             <button
-        onClick={handleUpload}
-        disabled={uploading}
-        className="inline-flex items-center justify-center gap-2 bg-white text-neutral-darker px-5 py-3 rounded-xl font-medium border border-neutral hover:bg-neutral-light transition-colors"
-      >
-        <Camera className="w-5 h-5" />
-        {uploading ? "Uploading..." : "Generate Diagnosis"}
-      </button>
+              onClick={handleUpload}
+              disabled={uploading}
+              className="inline-flex items-center justify-center gap-2 bg-white text-neutral-darker px-5 py-3 rounded-xl font-medium border border-neutral hover:bg-neutral-light transition-colors"
+            >
+              {uploading ? <Loader2 /> : <CircleChevronUpIcon className="w-5 h-5" />}
+              {uploading ? null : "Upload"}
+            </button>
             <Link
               href="/dashboard/chat"
               className="inline-flex items-center justify-center gap-2 bg-white text-neutral-darker px-5 py-3 rounded-xl font-medium border border-neutral hover:bg-neutral-light transition-colors"
             >
-              <MessageCircle className="w-5 h-5" /> Describe Symptoms
+              <MessageCircle className="w-5 h-5" /> Ask AI
             </Link>
           </div>
         </motion.div>

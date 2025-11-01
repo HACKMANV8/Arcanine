@@ -2,14 +2,15 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Camera, Calendar, MessageCircle, MapPin, Leaf, Settings } from 'lucide-react';
+import { Home, Camera, Calendar, MessageCircle, MapPin, Leaf, Settings, ShoppingCart } from 'lucide-react';
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: Home },
   { name: 'My Plants', href: '/dashboard/plants', icon: Leaf },
-  { name: 'Care Plans', href: '/dashboard/plans', icon: Calendar },
-  { name: 'Chat', href: '/dashboard/chat', icon: MessageCircle },
+  // { name: 'Care Plans', href: '/dashboard/plans', icon: Calendar },
+  // { name: 'Chat', href: '/dashboard/chat', icon: MessageCircle },
   { name: 'Nurseries', href: '/dashboard/nurseries', icon: MapPin },
+  { name: 'Marketplace', href: '/dashboard/marketplace', icon: ShoppingCart },
   { name: 'Settings', href: '/dashboard/settings', icon: Settings },
 ];
 
@@ -78,6 +79,7 @@ export function MobileNav() {
     { name: 'Plants', href: '/dashboard/plants', icon: Leaf },
     { name: 'Scan', href: '/dashboard?upload=true', icon: Camera },
     { name: 'Chat', href: '/dashboard/chat', icon: MessageCircle },
+    { name: 'Market', href: '/dashboard/marketplace', icon: ShoppingCart },
     { name: 'More', href: '/dashboard/settings', icon: Settings },
   ];
 
