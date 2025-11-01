@@ -1,8 +1,9 @@
 /* From Uiverse.io by dovatgabriel */ 
 .newtons-cradle {
- --uib-size: 20px;
+ --uib-size: 30px;
  --uib-speed: 1.2s;
- --uib-color: #474554;
+ --uib-color: #2e7d32 ;
+ padding: 5px;
  position: relative;
  display: flex;
  align-items: center;
