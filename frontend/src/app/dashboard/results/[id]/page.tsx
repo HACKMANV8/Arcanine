@@ -31,7 +31,15 @@ export default function ResultsPage() {
   const [sevenDayPlan, setSevenDayPlan] = useState<typeof mock7DayPlan | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
+  const [apiResponse, setApiResponse] = useState<any>(null);
+  const [treatment1, setTreatment1] = useState<any>(null);
+  const [treatment2, setTreatment2] = useState<any>(null);
+  const [treatment3, setTreatment3] = useState<any>(null);
+  const [treatment, setTreatment] = useState({
+    immediate: [],
+    longTerm: [],
+    prevention: [],
+  });
   // Fetch plant details from backend
   useEffect(() => {
     const fetchPlantDetails = async () => {
@@ -55,8 +63,21 @@ export default function ResultsPage() {
         }
         
         const data = await response.json();
-        console.log('Plant details:', data);
-        
+        // setTreatment1()
+        setTreatment1(data.description)
+        setTreatment2(data.treatment.longTerm)
+        setTreatment3(data.treatment.prevention)
+        console.log(data.treatment)
+         if (data.treatment) {
+        // setTreatment({
+        //   immediate: data.treatment.immediate || [],
+        //   longTerm: data.treatment.longTerm || [],
+        //   prevention: data.treatment.prevention || [],
+        // });
+        // console.log(treatment)
+      } 
+        // console.log('Plant details:', data);
+         setApiResponse(data);
         // Transform the data to match our Diagnosis interface
         const transformedData: Diagnosis = {
           id: data.id || '',
@@ -99,6 +120,23 @@ export default function ResultsPage() {
     }
   }, [params.id]);
   
+  const callTextToSpeech = async (text: string) => {
+    try {
+      const response = await fetch("http://localhost:8000/transcript/treatment/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ text: text }),
+      });
+
+      const result = await response.json();
+      console.log("✅ Sent Text Data:", result);
+    } catch (error) {
+      console.error("❌ Error sending data:", error);
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-neutral-light flex justify-center items-center">
@@ -107,7 +145,8 @@ export default function ResultsPage() {
       </div>
     );
   }
-  
+
+  console.log(treatment1)
   if (error || !diagnosis) {
     return (
       <div className="min-h-screen bg-neutral-light flex justify-center items-center p-4">
@@ -136,15 +175,7 @@ export default function ResultsPage() {
   const config = statusConfig[diagnosis.status] || statusConfig['needs-attention'];
   const Icon = config.icon;
 
-  const is7DayPlanCompleted = useMemo(() => {
-    if (!sevenDayPlan || sevenDayPlan.days.length < 7) return false;
 
-    const seventhDay = sevenDayPlan.days[6]; // 7th day is index 6
-    if (!seventhDay || seventhDay.tasks.length === 0) return false;
-
-    const lastTaskOfSeventhDay = seventhDay.tasks[seventhDay.tasks.length - 1];
-    return lastTaskOfSeventhDay.completed;
-  }, [sevenDayPlan]);
 
   return (
     <div className="min-h-screen bg-neutral-light">
@@ -232,7 +263,7 @@ export default function ResultsPage() {
                     <button
                   type="button"
                   className="inline-flex mb-4 items-center gap-2 px-3 py-2 rounded-lg border border-neutral text-neutral-darker hover:bg-neutral-light"
-                  onClick={() => alert('Voice (Mock)')}
+                  onClick={() => callTextToSpeech(diagnosis.description)}
                   aria-label="Voice"
                 >
                   <AudioLines className="w-4 h-4" />
@@ -253,7 +284,7 @@ export default function ResultsPage() {
                     <button
                   type="button"
                   className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-neutral text-neutral-darker hover:bg-neutral-light"
-                  onClick={() => alert('Voice (Mock)')}
+                  onClick={() => callTextToSpeech(treatment2.join(". "))}
                   aria-label="Voice"
                 >
                   <AudioLines className="w-4 h-4" />
@@ -265,7 +296,15 @@ export default function ResultsPage() {
                           diagnosis.treatment.immediate.map((step, i) => (
                             <li key={i} className="flex items-start gap-3">
                               <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                              <span className="text-neutral-dark">{step}</span>
+                              <span className="text-neutral-dark flex-1">{step}</span>
+                              <button
+                                type="button"
+                                className="ml-2 p-1 rounded hover:bg-neutral-light"
+                                onClick={() => callTextToSpeech(step)}
+                                aria-label="Listen to this step"
+                              >
+                                <AudioLines className="w-4 h-4 text-neutral-muted" />
+                              </button>
                             </li>
                           ))
                         ) : (
@@ -280,7 +319,15 @@ export default function ResultsPage() {
                           diagnosis.treatment.longTerm.map((step, i) => (
                             <li key={i} className="flex items-start gap-3">
                               <CheckCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
-                              <span className="text-neutral-dark">{step}</span>
+                              <span className="text-neutral-dark flex-1">{step}</span>
+                              <button
+                                type="button"
+                                className="ml-2 p-1 rounded hover:bg-neutral-light"
+                                onClick={() => callTextToSpeech(step)}
+                                aria-label="Listen to this step"
+                              >
+                                <AudioLines className="w-4 h-4 text-neutral-muted" />
+                              </button>
                             </li>
                           ))
                         ) : (
@@ -300,7 +347,7 @@ export default function ResultsPage() {
                     <button
                   type="button"
                   className="inline-flex mb-3 items-center gap-2 px-3 py-2 rounded-lg border border-neutral text-neutral-darker hover:bg-neutral-light"
-                  onClick={() => alert('Voice (Mock)')}
+                  onClick={() => callTextToSpeech(treatment3.join(". "))}
                   aria-label="Voice"
                 >
                   <AudioLines className="w-4 h-4" />
@@ -310,7 +357,15 @@ export default function ResultsPage() {
                         diagnosis.treatment.prevention.map((step, i) => (
                           <li key={i} className="flex items-start gap-3">
                             <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                            <span className="text-neutral-dark">{step}</span>
+                            <span className="text-neutral-dark flex-1">{step}</span>
+                            <button
+                              type="button"
+                              className="ml-2 p-1 rounded hover:bg-neutral-light"
+                              onClick={() => callTextToSpeech(step)}
+                              aria-label="Listen to this step"
+                            >
+                              <AudioLines className="w-4 h-4 text-neutral-muted" />
+                            </button>
                           </li>
                         ))
                       ) : (
@@ -383,7 +438,7 @@ export default function ResultsPage() {
 
               <div className="space-y-3">
                 <Link
-                  href={`/dashboard/plans/${params.id}`}
+                  href={`/dashboard/plans/9767d3bc-7b04-4fbb-9ac7-e92a20532f21`}
                   className="w-full bg-primary hover:bg-primary-dark text-white font-medium py-3 rounded-xl text-center transition-all duration-200 flex items-center justify-center gap-2"
                 >
                   <Calendar className="w-5 h-5" />
@@ -396,7 +451,7 @@ export default function ResultsPage() {
                   Ask AI Assistant
                 </Link>
                 {/* Conditional buttons for completed 7-day plan */}
-                {is7DayPlanCompleted && (
+                {/* {is7DayPlanCompleted && (
                   <>
                     <Link
                       href="/dashboard/upload"
@@ -413,7 +468,7 @@ export default function ResultsPage() {
                       Chat with AI
                     </Link>
                   </>
-                )}
+                )} */}
               </div>
             </motion.div>
           </div>

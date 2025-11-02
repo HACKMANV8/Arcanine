@@ -85,7 +85,7 @@ export default function ManageListingsPage() {
                         </div>
                       ) : (
                         <>
-                          <p className="text-sm text-neutral-muted">Price: <span className="font-semibold text-primary">${product.price}</span> / {product.unit}</p>
+                          <p className="text-sm text-neutral-muted">Price: <span className="font-semibold text-primary">{product.price}</span> / {product.unit}</p>
                           <p className="text-sm text-neutral-muted">Quantity: {product.quantity}</p>
                         </>
                       )}

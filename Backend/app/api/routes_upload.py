@@ -1,6 +1,6 @@
 from pathlib import Path
 from ssl import MemoryBIO
-from fastapi import APIRouter, UploadFile, File,HTTPException, Depends,status
+from fastapi import APIRouter, UploadFile, File,HTTPException, Depends,status,Request
 import uuid
 import sys
 import os
@@ -26,6 +26,7 @@ sys.path.append(r'D:\Hacktons\HackMan\AI')
 import prediction  # type: ignore
 import testing    # type: ignore
 import run_plan
+import tts_handler
 router = APIRouter(prefix="/transcript", tags=["Transcript"])
 
 # Correct upload directory
@@ -122,7 +123,7 @@ async def upload_images(files: list[UploadFile] = File(...)):
     print(wether)
     # print(json.dumps(outputresponce, indent=2))
     print("djjjjjjjjjjjjjjjjjjjjjjjj",outputresponce)
-    mobile="8431036155"
+    mobile=""
     
     user = await users_collection.find_one({"mobile": mobile})
     if not user:
@@ -318,7 +319,7 @@ async def get_all_plants(mobile: str):
 @router.get("/plant/get7days")
 async def getsday():
     
-    API_KEY = "QiYe8COtkjeYV3h2sS6oA7jr13lRTDqv"  # replace with your Tomorrow.io API key
+    API_KEY = ""  # replace with your Tomorrow.io API key
     LOCATION = "delhi"
 
     url = f"https://api.tomorrow.io/v4/weather/forecast?location={LOCATION}&apikey={API_KEY}"
@@ -360,7 +361,7 @@ async def getsday():
 
             result.append(day_summary)
 
-        mobile="8431036155"
+        mobile=""
         ides="afb56b1f-7000-4436-926f-99ff1939c7ca"
         user = await users_collection.find_one({"mobile": mobile})
         if not user:
@@ -431,3 +432,36 @@ async def get_sevday_plan(mobile: str, plant_id: str):
         status_code=status.HTTP_404_NOT_FOUND,
         detail=f"Plant with ID {plant_id} not found for this user"
     )
+
+
+
+@router.post("/treatment")
+async def process_longterm(request: Request):
+    try:
+        data = await request.json()
+        print("Received data:", data)
+        
+        # Extract text from different possible fields
+        text_content = ""
+        if "immediate" in data:
+            text_content = data["immediate"] if isinstance(data["immediate"], str) else " ".join(data["immediate"])
+        elif "longTerm" in data:
+            text_content = data["longTerm"] if isinstance(data["longTerm"], str) else " ".join(data["longTerm"])
+        elif "prevention" in data:
+            text_content = data["prevention"] if isinstance(data["prevention"], str) else " ".join(data["prevention"])
+        elif "description" in data:
+            text_content = data["description"]
+        else:
+            # Handle generic text field
+            text_content = data.get("text", str(data))
+        
+        print("Extracted text:", text_content)
+        
+        # Pass only the text to the TTS handler
+        tts_handler.getairesponce(text_content)
+        
+        # Return success response
+        return {"message": "Text processed successfully", "text": text_content}
+    except Exception as e:
+        print(f"Error processing treatment request: {e}")
+        raise HTTPException(status_code=500, detail=str(e))

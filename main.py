@@ -1,6 +1,6 @@
 import requests
 import json
-API_KEY = "QiYe8COtkjeYV3h2sS6oA7jr13lRTDqv"  # replace with your Tomorrow.io API key
+API_KEY = ""  # replace with your Tomorrow.io API key
 LOCATION = "delhi"
 
 url = f"https://api.tomorrow.io/v4/weather/forecast?location={LOCATION}&apikey={API_KEY}"
@@ -50,7 +50,7 @@ if response.status_code == 200:
 # import json
 
 # # ✅ Replace with your actual OpenWebNinja API key
-# API_KEY = "sk-ak_2owr3nlwk5na9ep3vomvavhzo48h00mompbyd1u2mbpqgwn"
+# API_KEY = ""
 
 # # Setup
 # conn = http.client.HTTPSConnection("api.openwebninja.com")
@@ -106,7 +106,7 @@ if response.status_code == 200:
 
 # # Setup
 # conn = http.client.HTTPSConnection("api.openwebninja.com")
-# headers = { 'x-api-key': "ak_2owr3nlwk5na9ep3vomvavhzo48h00mompbyd1u2mbpqgwn" }
+# headers = { 'x-api-key': "" }
 
 # # Example: search for plant nurseries near Delhi
 # params = urllib.parse.urlencode({
