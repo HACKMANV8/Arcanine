@@ -174,21 +174,21 @@ export default function LoginPage() {
             className="relative h-56 lg:h-96"
           >
             <motion.img
-              src="https://images.unsplash.com/photo-1618375569909-3c8616cf7de3?w=400&h=300&fit=crop"
+              src="/3.png"
               alt="App screenshot 1"
               className="absolute right-6 top-0 w-40 h-28 lg:w-64 lg:h-40 rounded-xl object-cover shadow-soft-lg"
               animate={{ y: [0, -8, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
             />
             <motion.img
-              src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400&h=300&fit=crop"
+              src="/2.png"
               alt="App screenshot 2"
               className="absolute left-4 top-10 w-48 h-32 lg:w-72 lg:h-44 rounded-xl object-cover shadow-soft-lg"
               animate={{ y: [0, 10, 0] }}
               transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
             />
             <motion.img
-              src="https://images.unsplash.com/photo-1592841200221-a6898f307baa?w=400&h=300&fit=crop"
+              src="/1.png"
               alt="App screenshot 3"
               className="absolute left-24 bottom-0 w-44 h-28 lg:w-64 lg:h-40 rounded-xl object-cover shadow-soft-lg"
               animate={{ y: [0, -6, 0] }}

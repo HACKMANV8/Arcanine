@@ -144,7 +144,7 @@ export default function MarketplacePage() {
                     <span className="text-sm text-neutral-muted">({product.reviews})</span>
                   </div>
                   <div className="flex items-center gap-2 mb-3">
-                    <motion.span layoutId={`card-price-${product.id}`} className="font-semibold text-primary text-xl">${product.price}</motion.span>
+                    <motion.span layoutId={`card-price-${product.id}`} className="font-semibold text-primary text-xl">{product.price}</motion.span>
                     <span className="text-sm text-neutral-muted">{product.unit}</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm text-neutral-muted mb-4">
@@ -204,7 +204,7 @@ export default function MarketplacePage() {
                       <span className="text-sm text-neutral-muted">({expandedCard.reviews})</span>
                     </div>
                     <div className="flex items-center gap-2 mb-3">
-                      <motion.span layoutId={`card-price-${expandedCard.id}`} className="font-semibold text-primary text-2xl">${expandedCard.price}</motion.span>
+                      <motion.span layoutId={`card-price-${expandedCard.id}`} className="font-semibold text-primary text-2xl">{expandedCard.price}</motion.span>
                       <span className="text-sm text-neutral-muted">{expandedCard.unit}</span>
                     </div>
                     <p className="text-sm text-gray-500 mb-4">{expandedCard.quantity}</p>
